@@ -1,0 +1,129 @@
+{% load static %}
+<html lang="en">
+<head>
+    <title>Online  Shop</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sidebar.css' %}">
+    <script src="{% static 'js/myjs.js' %}"></script>
+</head>
+<body>
+<!--vertical navbar start-->
+<div class="vertical-nav bg-white" id="sidebar">
+    <div class="py-4 px-3 mb-1 bg-light">
+        <!--align media objects (like images or videos) together with content
+        To create a flexbox container and to transform direct children into flex items, use the d-flex class
+        -->
+        <p class="font-weight-bold text-uppercase px-3 small dashboard-text text-center">Online  Shop</p>
+        <div class="media d-flex align-items-center">
+           
+                
+            <div class="media-body">
+                <h4 class="mb-0">Admin</h4>
+                <p class="text-muted mb-0">{{request.user.email}}</p>
+            </div>
+        </div>
+    </div>
+
+ 
+    <!--.flex-column to display the flex items vertically (on top of each other)-->
+    <ul class="nav flex-column bg-white">
+        <li class="nav-item">
+            <a href="" class="nav-link text-dark bg-light">
+                <i class="fas fa-tachometer-alt fa-fw mr-3 text-primary"></i>
+                Dashboard
+            </a>
+        </li>
+        <!--fa-fw class is used to set icons at a fixed width. This class is useful when different icon widths throw off alignment-->
+
+ 
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark bg-light" href="#" id="navbardrop" data-toggle="dropdown">
+                <i class="fas fa-chart-bar mr-3 text-primary fa-fw"></i>  Category
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'add_category'%}">Add Category</a>
+                <a class="dropdown-item" href="{% url 'view_category'%}">View Category</a>
+            </div>
+        </li>
+
+ 
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark bg-light" href="#" id="navbardrop" data-toggle="dropdown">
+                <i class="fas fa-chart-bar mr-3 text-primary fa-fw"></i> Manage Product
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'add_product' %}">Add Product</a>
+                <a class="dropdown-item" href="{% url 'view_product' %}">View Product</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark bg-light" href="#" id="navbardrop" data-toggle="dropdown">
+                <i class="fas fa-chart-bar mr-3 text-primary fa-fw"></i> Manage User
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="">View User</a>
+
+ 
+            </div>
+        </li>
+        <li class="nav-item">
+            <a href="" class="nav-link text-dark bg-light">
+                <i class="fas fa-cog mr-3 text-primary fa-fw"></i>
+                Manage Order
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="" class="nav-link text-dark bg-light">
+                <i class="fas fa-cog mr-3 text-primary fa-fw"></i>
+                Manage Feedback
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="" class="nav-link text-dark bg-light">
+                <i class="fas fa-cog mr-3 text-primary fa-fw"></i>
+                Change Password
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="" class="nav-link text-dark bg-light">
+                <i class="fas fa-sign-out-alt mr-3 text-primary fa-fw"></i>
+                Logout
+            </a>
+        </li>
+
+ 
+    </ul>
+</div>
+<!--vertical navbar end-->
+<!--page content holder-->
+<div class="page-content p-4" id="content">
+    <a href="" title="logout" class="float-right text-white"><i class="fas fa-sign-out-alt fa-2x"></i></a>
+
+ 
+    <!--toggle btn-->
+    <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4">
+        <i class="fas fa-bars mr-2"></i>
+        <small class="text-uppercase font-weight-bold">Toggle</small>
+    </button>
+    <!--end toggle btn-->
+
+ 
+    {% block main %}
+
+    {% endblock %}
+</div>
+<!--end page content holder-->
+{% for i in messages %}
+<script>
+    alert('{{i}}');
+</script>
+{% endfor %}
+</body>
+</html>

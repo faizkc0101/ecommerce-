@@ -1,0 +1,105 @@
+{% extends 'myadmin/admin_base.html' %}
+{% block main  %}
+<style>
+.glow {
+  font-size: 80px;
+  color: #fff;
+  text-align: center;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
+/* Rounded border */
+hr.rounded {
+  border-top: 8px solid lightblue;
+  border-radius: 5px;
+}
+</style>
+<div class="row">
+    <div class="col-sm-3 p-2">
+        <div class="card shadow bg-dark">
+            <div class="card-body">
+                <h4 class="text-light">Total Users</h4>
+                <h5 style="color : #F1948A">121</h5>
+            </div>
+            <div class="card-footer">
+                <a href="" class="text-warning">View Details >></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 p-2">
+        <div class="card shadow bg-dark">
+            <div class="card-body">
+                <h4 class="text-light">Total Products</h4>
+                <h5 style="color : #F1948A">112</h5>
+            </div>
+            <div class="card-footer">
+                <a href="" class="text-warning">View Details >></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 p-2">
+        <div class="card shadow bg-dark">
+            <div class="card-body">
+                <h4 class="text-light">Total Category</h4>
+                <h5 style="color : #F1948A">231</h5>
+            </div>
+            <div class="card-footer">
+                <a href="" class="text-warning">View Details >></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 p-2">
+        <div class="card shadow bg-dark">
+            <div class="card-body">
+                <h4 class="text-light">New Order</h4>
+                <h5 style="color : #F1948A"> 111</h5>
+            </div>
+            <div class="card-footer">
+                <a href="" class="text-warning">View Details >></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 p-2">
+        <div class="card shadow bg-dark">
+            <div class="card-body">
+                <h4 class="text-light">Total Order</h4>
+                <h5 style="color : #F1948A"> 243</h5>
+            </div>
+            <div class="card-footer">
+                <a href="" class="text-warning">View Details >></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 p-2">
+        <div class="card shadow bg-dark">
+            <div class="card-body">
+                <h4 class="text-light">Total Feedback</h4>
+                <h5 style="color : #F1948A"> 1223</h5>
+            </div>
+            <div class="card-footer">
+                <a href="" class="text-warning">View Details >></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 p-2">
+        <div class="card shadow bg-dark">
+            <div class="card-body">
+                <h4 class="text-light">Total Reviews</h4>
+                <h5 style="color : #F1948A"> 1134</h5>
+            </div>
+            <div class="card-footer">
+                <a href="" class="text-warning">View Details >></a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock  %}

@@ -1,0 +1,122 @@
+/* Base styles */
+body {
+  overflow-x: hidden;
+  font-family: 'Roboto', sans-serif; /* Applying Google font */
+}
+
+#wrapper {
+  display: flex;
+}
+
+#sidebar-wrapper {
+  min-height: 100vh;
+  margin-left: -15rem;
+  transition: margin 0.25s ease-out;
+  background-color: #f8f9fa; /* Light background for the sidebar */
+}
+
+#sidebar-wrapper .sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 1.5rem; /* Slightly larger font for better visibility */
+  font-weight: bold; /* Make heading bold */
+}
+
+#sidebar-wrapper .list-group {
+  width: 15rem;
+}
+
+#sidebar-wrapper .list-group-item {
+  transition: background-color 0.2s ease; /* Smooth transition for hover effects */
+}
+
+#sidebar-wrapper .list-group-item:hover {
+  background-color: #e2e6ea; /* Change background on hover */
+}
+
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  margin-left: 0;
+}
+
+@media (min-width: 768px) {
+  #sidebar-wrapper {
+    margin-left: 0;
+  }
+
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -15rem;
+  }
+}
+
+/* Card styles */
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Allow cards to grow to fill the row */
+  border: 1px solid #e0e0e0; /* Light border for cards */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transitions for hover effects */
+}
+
+.card:hover {
+  transform: scale(1.05); /* Scale the card on hover */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+  background-color: #f8f9fa; /* Change background color on hover */
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  justify-content: space-between; /* Distribute space evenly */
+  min-height: 250px; /* Set a minimum height based on your design */
+}
+
+.card-title {
+  font-weight: bold; /* Make titles bold */
+  color: #343a40; /* Darker color for titles */
+  font-size: 1.1rem; /* Slightly larger font for card titles */
+}
+
+.card-text {
+  color: #6c757d; /* Muted color for descriptions */
+}
+
+.card-img-top {
+  height: 200px; /* Set a fixed height for images */
+  object-fit: cover; /* Ensure images cover the area without stretching */
+}
+
+.btn {
+  width: 100%; /* Full width buttons */
+  margin-bottom: 5px; /* Space between buttons */
+}
+
+/* Button hover effects */
+.btn-primary:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.btn-warning:hover {
+  background-color: #e0a800; /* Darker yellow on hover */
+}
+
+/* Text truncation */
+.text-truncate {
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis for long text */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card {
+    min-height: 300px; /* Increase minimum height for smaller screens */
+  }
+}

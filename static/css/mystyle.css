@@ -1,0 +1,69 @@
+
+
+/* Change Brand Font */
+.navbar-brand {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 27px;
+  font-weight: bold;
+  color: #474e5123;
+  
+}
+
+/* Change Navigation Color */
+.nav-link, .dropdown-item {
+  color: rgba(30, 27, 27, 0.713) !important;
+  font-size: 20px;
+}
+
+/* Force Light Hover Color for Navbar Links */
+.navbar-nav .nav-link:hover,
+.navbar-nav .dropdown-item:hover {
+  color: rgb(1, 5, 11) !important;  /* Lighter green text */
+  background-color: rgba(111, 115, 119, 0.573) !important;  /* Light blue background */
+  border-radius: 30px;
+}
+
+/* Change Footer Social Icon Color */
+#footer a, #contact a {
+  color: #090104;
+}
+
+#footer a:hover {
+  color: rgb(127, 139, 216);
+}
+
+#contact a:hover {
+  color: rgb(99, 99, 149);
+}
+
+/* Scroll Button */
+#scrollbtn {
+  position: fixed;
+  bottom: 20px;
+  right: 40px;
+  z-index: 99;
+  border: none;
+  color: rgb(28, 28, 52);
+  background: #68777e;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Login Background */
+#login {
+  background-size: 100%;
+  background-position: 0px 80px;
+  background-repeat: no-repeat;
+  opacity: 0.8;
+}
+
+/* Signup Form Background */
+#signupform {
+  background: url('/static/images/bg_texture.png');
+  color: rgb(149, 136, 136);
+}

@@ -1,0 +1,75 @@
+{% load static %}
+<html>
+<head>
+    <title>My Profile</title>
+</head>
+<body>
+{% include 'navigation.html' %}
+ 
+<div class="card shadow m-2">
+    <div class="card-body">
+        <h5 class="p-2 text-danger" style="border-bottom: 2px solid orange;">My Profile</h5>
+<div class="container-fluid">
+<form method="POST"  enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" name="fname" placeholder="Enter First Name"  class="form-control"  pattern="[A-Za-z]+" value="{{data.user.first_name}}">
+            </div>
+        </div>
+        
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" name="lname" placeholder="Enter Last Name"  class="form-control" pattern="[A-Za-z]+" value="{{data.user.last_name}}">
+            </div>
+        </div>
+ 
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>Email ID</label>
+                <input type="email" name="email" readonly placeholder="Email Address" required class="form-control" value="{{data.user.username}}">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="Username" name="Username" readonly placeholder=" Username" required class="form-control" value="{{data.user.Username}}">
+            </div>
+        </div>
+ 
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>Contact</label>
+                <input type="text" name="mobile" placeholder="Contact Number" required class="form-control" value="{{data.user.phone_field}}">
+            </div>
+        </div>
+ 
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>User PIC</label>
+                <input type="file" name="image" class="form-control">
+            </div>
+        </div>
+{% comment %}  
+        <div class="col-sm-6">
+            <div class="form-group">
+                <img src = "{{data.image.url}}" width="100" height="100">
+            </div>
+        </div> {% endcomment %}
+ 
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label>Address</label>
+                <textarea name="address" class="form-control" placeholder="Full Address">{{data.address}}</textarea>
+            </div>
+        </div>
+ 
+    </div>
+    <input type="submit" value="Submit" class="m-2 px-3 btn btn-primary">
+</form>
+</div>
+</div>
+</div>

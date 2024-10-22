@@ -1,0 +1,97 @@
+{% load static %}
+{% load custom_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    
+    <!-- CSS Links -->
+    <link href="{% static 'css/product-detail.css' %}" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+
+    </style>
+</head>
+<body>
+    {% include 'navigation.html' %}
+    
+    <section id="product-detail" class="section-bg ">
+        <div class="container">
+            <div class="text-center mb-4 title_bx">
+                <h3 class="title">Product Detail</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="product-images" id="product-images">
+                        <img id="product-img" class="img-fluid" src="{{ product.image.url }}" alt="{{ product.name|default:'Product Image' }}">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="product-detail-content">
+                        <h2 class="product-name">{{ product.name }}</h2>
+                        <div class="price-box">
+                            <p><strong>Price:</strong> Rs. {{ product.price }}</p>
+                            {% if product.discount %}
+                                <p>Discounted Price: <span class="text-danger">Rs. {{ product.id|applydiscount }}</span></p>
+                            {% endif %}
+                        </div>
+                        <p class="product-description"><strong>Description:</strong> {{ product.description }}</p>
+
+                        <form action="" method="post">
+                            <div class="btn-group">
+                                <button class="btn btn-success " type="button">
+                                    <i class="fa fa-shopping-cart"></i> Buy Now
+                                </button>
+                                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">
+                                    <i class="fa fa-shopping-cart"></i> Add to Cart
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="recent-products bg-light">
+        <div class="container">
+            <div class="text-center title_bx">
+                <h3 class="title">
+                    <span class="header-title-1">Recent</span>
+                    <span class="header-title-2">Posts</span>
+                </h3>
+            </div>
+            <div class="row">
+                {% for i in latest_products %}
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <a href="{% url 'product_detail' i.id %}">
+                            <img class="card-img-top" src="{{ i.image.url }}" alt="{{ i.name|default:'Product Image' }}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ i.name }}</h5>
+                            <div class="price-box">
+                                {% if i.discount %}
+                                    <p>Original Price: <del>Rs. {{ i.price }}</del></p>
+                                    <p>Discounted Price: <span class="text-danger">Rs. {{ i.id|applydiscount }}</span></p>
+                                {% else %}
+                                    <p>Price: Rs. {{ i.price }}</p>
+                                {% endif %}
+                            </div>
+                            <a href="{% url 'add_to_cart' i.id %}" class="btn btn-primary btn-block">
+                                <i class="fa fa-shopping-cart"></i> Add to Cart
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript Links -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+</html>
+  

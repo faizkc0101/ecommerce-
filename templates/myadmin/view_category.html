@@ -1,0 +1,38 @@
+{% extends 'myadmin/admin_base.html' %}
+{% block main  %}
+
+<div class="card shadow">
+    <div class="card-body">
+
+        <h5 class="p-2" style="border-bottom: 2px solid orange;">All Category</h5>
+        <div class="container-fluid">
+
+            <table class="table table-bordered table-sm" id="example">
+                <thead>
+                <tr>
+                    <th>S. No.</th>
+                    <th>Category Name</th>
+                    <th>Creation Date</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in category %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.created}}</td>
+                    <td>
+                        <a href="{% url 'edit_category' i.id %}" class="text-success">Edit</a>
+                        <a href="{% url 'delete_category' i.id %}" class="text-danger"
+                           onclick="return confirm('Are You Sure?')">Delete</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

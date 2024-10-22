@@ -1,0 +1,78 @@
+{% include 'navigation.html' %}
+{% load custom_tags %}
+{% load static %}
+
+<link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome for icons -->
+
+<div class="d-flex" id="wrapper">
+  <!-- Sidebar -->
+  <div class="bg-light border-right" id="sidebar-wrapper">
+    <div class="sidebar-heading">Start Filtering</div>
+    <div class="list-group list-group-flush">
+      <a href="{% url 'user_product' 0 %}" class="list-group-item list-group-item-action bg-light">All Products</a>
+      {% for i in allcategory %}
+        <a href="{% url 'user_product' i.id %}" class="list-group-item list-group-item-action bg-light">{{ i.name }}</a>
+      {% endfor %}
+    </div>
+  </div>
+  <!-- /#sidebar-wrapper -->
+
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+      <button class="btn btn-info" id="menu-toggle">
+     {{selected_category}}
+      </button>
+    </nav> 
+
+    <div class="container-fluid mt-2">
+      <div class="row">
+        {% for j in product %}
+          <div class="col-sm-6 col-md-3 mb-4">
+            <div class="card h-100 shadow-sm border-light"> <!-- Added shadow and border light -->
+              {% if j.image %}
+                <img class="card-img-top img-thumbnail" loading="lazy" src="{{ j.image.url }}" alt="{{ j.name }}" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;"> <!-- Increased height and added border-radius -->
+              {% else %}
+                <img class="card-img-top img-thumbnail" loading="lazy" src="{% static 'images/default.jpg' %}" alt="default-img" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;"> <!-- Increased height and added border-radius -->
+              {% endif %}
+              <div class="card-body d-flex flex-column">
+                <h6 class="card-title text-truncate"> <!-- Truncate long titles -->
+                  {{ j.name }} 
+                  {% if j.discount %}
+                     <span class="text-muted text-decoration-line-through"><del>Rs. {{ j.price }}</del></span><br><br>
+                     <span class="text-danger"> Rs. {{ j.id|applydiscount }}</span>
+                  {% else %}
+                    - Rs. {{ j.price }}
+                  {% endif %}
+                </h6>
+                <p class="card-text" style="font-size: 14px;">{{ j.description|truncatechars:100 }}</p> <!-- Truncate long descriptions -->
+                <div class="mt-auto"> <!-- Use mt-auto to push buttons to the bottom -->
+                  <a href="{% url 'add_to_cart' j.id %}" class="btn btn-info btn-block"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                  <a href="{% url 'product_detail' j.id %}" class="btn btn-light btn-block">View</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-body text-center">
+                <img src="{% static 'images/empty.jpg' %}" alt="No Products" style="width: 50%;">
+                <p>No products available in this category.</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
+</script>
+

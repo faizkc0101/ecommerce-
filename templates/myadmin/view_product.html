@@ -1,0 +1,49 @@
+{% extends 'myadmin/admin_base.html' %}
+{% block main  %}
+
+<div class="card shadow">
+    <div class="card-body">
+
+        <h5 class="p-2" style="border-bottom: 2px solid orange;">All Product</h5>
+        <div class="container-fluid">
+
+            <table class="table table-bordered table-sm" id="example">
+                <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Image</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in product %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>
+                    {% if i.image %}
+                        <img src="{{ i.image.url }}" style="width:100px"/>
+                    {% else %}
+                        <span>No image available</span>
+                    {% endif %}
+                    <td>{{i.name}}</td>
+                    <td>{{i.category.name}}</td>
+                    <td>{{i.price}}</td>
+                    <td>{{i.discount}}</td>
+                    <td>
+                        <a href="{% url 'edit_product' i.id %}" class="text-success">Edit</a>
+                        <a href="{% url 'delete_product' i.id %}" class="text-danger"
+                           onclick="return confirm('Are You Sure?')">Delete</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

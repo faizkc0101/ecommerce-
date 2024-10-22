@@ -1,0 +1,9 @@
+.nav-link{
+    color:white !important;
+}
+.navbar-brand{
+      color:white;
+}
+.navbar-brand:hover{
+      color:rgb(235, 235, 192);
+}
