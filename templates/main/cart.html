@@ -35,8 +35,8 @@
                         </div>
                     </td>
                     <td>{{ item.quantity }}</td>
-                    <td>Rs. {{ item.product.price }}</td>
-                    <td>Rs. {{ item.subtotal }}</td>
+                    <td>Rs.{{ item.product.price }}</td>
+                    <td>Rs.{{ item.subtotal }}</td>
                     <td>
                         <a href="{% url 'update_cart_item' item.product.id 'incre' %}" class="btn btn-sm btn-primary">+</a>
                         <a href="{% url 'update_cart_item' item.product.id 'decre' %}" class="btn btn-sm btn-warning">-</a>

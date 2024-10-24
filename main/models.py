@@ -48,6 +48,8 @@ class Cart(models.Model):
         total = sum(item.subtotal() for item in self.cartitem_set.all())
         return total
 
+    
+
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -58,9 +60,48 @@ class CartItem(models.Model):
 
     def subtotal(self):
         return self.quantity * float(self.product.price)
+#########################################################################
+# addresses for shipping
+class Address(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    address_line = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.address_line}, {self.city}, {self.state}, {self.country}"
+
+# address and payment method
+class Order(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    is_paid = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    PAYMENT_METHOD_CHOICES = [
+        ('COD', 'Cash on Delivery'),
+        ('RAZORPAY', 'Razorpay')
+    ]
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES)
+
+    def __str__(self):
+        return f"Order {self.id} for {self.cart.user.email}"
 
 
+# storing payment details for each order
+class Payment(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    payment_id = models.CharField(max_length=100, blank=True, null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_status = models.CharField(max_length=50, default='Pending')
 
+    def __str__(self):
+        return f"Payment {self.payment_id} for Order {self.order.id}"
+#####################################################
+#after payment its will use later
 ORDER_STATUS = (
     (1, "Pending"),
     (2, "Dispatched"),
