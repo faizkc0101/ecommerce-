@@ -1,4 +1,55 @@
-{% extends "navigation.html" %}
-{% block body %}
-<h1>about page</h1>
-{% endblock body %}
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<html>
+<head>
+  <title>About Us</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<section class="about-section py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 mb-4">
+        <div class="inner-column">
+          <div class="sec-title mb-3">
+            <span class="text-primary font-weight-bold">About Black Rock</span>
+            <h2 class="display-4">Leading Online Shopping for Men's Fashion</h2>
+          </div>
+          <p>Welcome to Black Rock! We are a passionate team dedicated to providing the latest trends in men's fashion since 2015. Our mission is to help you look your best with our curated collection of stylish dresses and apparel.</p>
+          <p>At Black Rock, we believe that fashion is not just about clothing; it's about expressing your individuality. Our selection features high-quality garments designed to make you stand out and feel confident.</p>
+          <a href="#" class="btn btn-primary btn-lg">Contact Us</a>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <div class="inner-column text-center">
+          <div class="author-desc mb-3">
+            <h2>Black ROCK</h2>
+            <span>Online shopping</span>
+          </div>
+          <figure class="image-1">
+            <a href="#" class="lightbox-image" data-fancybox="images">
+              <img title="Your Name" src="{% static 'images/about.png' %}" alt="" class="img-fluid rounded-circle">
+            </a>
+          </figure>
+        </div>
+      </div>
+    </div>
+    <div class="sec-title mt-5">
+      <span class="text-primary font-weight-bold">Our Future Goal</span>
+      <h2 class="display-4">To Innovate and Inspire in Men's Fashion</h2>
+    </div>
+    <p>Our focus is on providing a seamless shopping experience, blending exceptional UI/UX design with top-notch functionality to ensure that our platform is both attractive and efficient.</p>
+    <p>We are committed to delivering high-quality content and fashion insights to keep you informed about the latest trends in men's fashion.</p>
+    <p>We invite you to share your thoughts and styles with us; if our team loves it, we may feature it on our blog.</p>
+    <p>Keep visiting Black Rock for the latest in men's fashion!</p>
+  </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+{% endblock %}

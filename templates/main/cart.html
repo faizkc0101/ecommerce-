@@ -1,18 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
 {% load static %}
-<html lang="en
-">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Cart</title>
-    
-    <!-- CSS Links -->
-    <link href="{% static 'css/cart.css' %}" rel="stylesheet"/>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    {% include 'navigation.html' %}
-    
+
+<link href="{% static 'css/cart.css' %}" rel="stylesheet"/>
+
+   
+   
     <div class="container mt-5">
         <h2 class="text-center mb-4">My Cart</h2>
         <table class="table table-bordered table-hover">
@@ -59,8 +52,5 @@
         <a href="{% url 'booking' %}" class="btn btn-primary">Buy Now</a>
     </div>
 
-    <!-- JavaScript Links -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+
+{% endblock content %}

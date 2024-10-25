@@ -1,0 +1,32 @@
+<!-- templates/main/add_address.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Shipping Address</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="address_line">Address Line</label>
+            <input type="text" class="form-control" name="address_line" id="address_line" value="{{ existing_address.address_line }}" required>
+        </div>
+        <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" class="form-control" name="city" id="city" value="{{ existing_address.city }}" required>
+        </div>
+        <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" class="form-control" name="state" id="state" value="{{ existing_address.state }}" required>
+        </div>
+        <div class="form-group">
+            <label for="postal_code">Postal Code</label>
+            <input type="text" class="form-control" name="postal_code" id="postal_code" value="{{ existing_address.postal_code }}" required>
+        </div>
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input type="text" class="form-control" name="country" id="country" value="{{ existing_address.country }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Save Address</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,20 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
 {% load static %}
 {% load custom_tags %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Detail</title>
-    
-    <!-- CSS Links -->
-    <link href="{% static 'css/product-detail.css' %}" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
 
-    </style>
-</head>
-<body>
-    {% include 'navigation.html' %}
+    <link href="{% static 'css/product-detail.css' %}" rel="stylesheet"/>
+
     
     <section id="product-detail" class="section-bg ">
         <div class="container">
@@ -90,8 +81,6 @@
         </div>
     </section>
 
-    <!-- JavaScript Links -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</body>
-</html>
+
   
+{% endblock  %}

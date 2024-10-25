@@ -4,20 +4,30 @@ from accounts.models import UserProfile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
- 
+
+
+def about(request):
+    return render(request, 'main/about.html')
+
+def contact(request):
+    return render(request, 'main/contact.html')
+
 def home(request):
     return render(request,'main/home.html')
 
 def index(request):
     return render(request,'navigation.html')
 
-def about(request):
-    return render(request,'main/about.html')
+
 
 def main(request):
     #admin can  add carousel from backend 
     carousel = Carousel.objects.all()
-    context = {'carousel': carousel}
+    latest_products = Product.objects.all().order_by('-id')[:10]
+    
+
+    context = {'carousel': carousel,'latest_products':latest_products}
+
     return render(request, 'main/index.html',context)
 
 # product fetching function all or category wase
@@ -55,24 +65,32 @@ def product_detail(request, pid):
     }
     return render(request, "main/product_detail.html", context)
 
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from .models import Product, Cart, CartItem
 
 @login_required
 def add_to_cart(request, pid):
-    #Retrieving the product based on p-id
     product = Product.objects.get(id=pid)
 
-    #get or create the cart base on user
-    cart,created= Cart.objects.get_or_create(user=request.user)
-    
-    #get or create cartitem based on cart 
+    if request.user.is_staff: 
+        messages.error(request, "Admins cannot add products to the cart.")
+        return redirect('cart_view')
+
+    cart, created = Cart.objects.get_or_create(user=request.user)
+
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
   
-    #initial quantity of 1
+    # Initial quantity of 1
     if not created:
-        #alredy have just added
+        # Already have just added
         cart_item.quantity += 1
     cart_item.save()
-    return redirect('cart_view') 
+
+    messages.success(request, f"{product.name} has been added to your cart.")
+    return redirect('cart_view')
+
 
 @login_required
 def cart_view(request):
@@ -103,139 +121,7 @@ def remove_cart_item(request, pid):
     cart_item = CartItem.objects.get(cart=cart, product_id=pid)
     cart_item.delete()
     return redirect('cart_view')  
-#################################
-import razorpay
-from django.conf import settings
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-from .models import Address, Cart, Order, Payment
-from django.contrib import messages
-import hmac
-import hashlib
-import json
 
-# Razorpay client setup
-razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-
-# Add Address View
-@login_required
-def add_address(request):
-    if request.method == 'POST':
-        address_line = request.POST.get('address_line')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
-        postal_code = request.POST.get('postal_code')
-        country = request.POST.get('country')
-
-        # Create a new address for the logged-in user
-        Address.objects.create(
-            user=request.user,
-            address_line=address_line,
-            city=city,
-            state=state,
-            postal_code=postal_code,
-            country=country
-        )
-        messages.success(request, "Address added successfully!")
-        return redirect('checkout')
-
-    return render(request, 'main/add_address.html')
-
-# Checkout View
-@login_required
-def checkout(request):
-    cart = get_object_or_404(Cart, user=request.user)
-    address = Address.objects.filter(user=request.user).last()
-
-    if not address:
-        return redirect('add_address')  # Redirect to address addition if no address exists
-
-    if request.method == 'POST':
-        payment_method = request.POST.get('payment_method')
-
-        # Create the order
-        order = Order.objects.create(
-            cart=cart,
-            address=address,
-            payment_method=payment_method,
-            is_paid=False
-        )
-
-        if payment_method == 'RAZORPAY':
-            amount_in_paise = int(cart.total_price * 100)  # Razorpay expects the amount in paise
-            razorpay_order = razorpay_client.order.create({
-                'amount': amount_in_paise,
-                'currency': 'INR',
-                'payment_capture': '1'
-            })
-            razorpay_order_id = razorpay_order['id']
-
-            # Create a payment object
-            Payment.objects.create(
-                order=order,
-                payment_id=razorpay_order_id,
-                amount=cart.total_price
-            )
-
-            # Send data to template for Razorpay payment
-            context = {
-                'order': order,
-                'razorpay_key': settings.RAZORPAY_KEY_ID,
-                'order_id': razorpay_order_id,
-                'amount': amount_in_paise,
-            }
-            return render(request, 'main/razorpay_payment.html', context)
-
-        elif payment_method == 'COD':
-            # Handle Cash on Delivery (COD)
-            Payment.objects.create(
-                order=order,
-                payment_id='COD',
-                amount=cart.total_price,
-                payment_status='Completed'
-            )
-            order.is_paid = True
-            order.save()
-            return redirect('order_success')
-
-    return render(request, 'main/checkout.html', {'cart': cart, 'address': address})
-
-# Razorpay Callback View
-@csrf_exempt
-@login_required
-def razorpay_callback(request):
-    if request.method == 'POST':
-        razorpay_payment_id = request.POST.get('razorpay_payment_id')
-        razorpay_order_id = request.POST.get('razorpay_order_id')
-        razorpay_signature = request.POST.get('razorpay_signature')
-
-        try:
-            # Verify the signature
-            razorpay_client.utility.verify_payment_signature({
-                'razorpay_order_id': razorpay_order_id,
-                'razorpay_payment_id': razorpay_payment_id,
-                'razorpay_signature': razorpay_signature
-            })
-
-            payment = Payment.objects.get(payment_id=razorpay_order_id)
-            payment.payment_id = razorpay_payment_id
-            payment.payment_status = 'Completed'
-            payment.save()
-
-            # Mark the order as paid
-            order = payment.order
-            order.is_paid = True
-            order.save()
-
-            return redirect('order_success')
-
-        except razorpay.errors.SignatureVerificationError:
-            return redirect('order_failed')
-
-
-################################
 # after payment i wil use later
 def booking(request):
     cart = Cart.objects.get(user=request.user)

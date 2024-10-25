@@ -1,9 +1,9 @@
-{% include 'navigation.html' %}
+{% extends "base.html" %}
+{% block content %}
 {% load custom_tags %}
 {% load static %}
 
 <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome for icons -->
 
 <div class="d-flex" id="wrapper">
   <!-- Sidebar -->
@@ -75,4 +75,4 @@
     $("#wrapper").toggleClass("toggled");
   });
 </script>
-
+{% endblock content %}

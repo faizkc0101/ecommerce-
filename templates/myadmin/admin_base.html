@@ -68,7 +68,7 @@
                 <i class="fas fa-chart-bar mr-3 text-primary fa-fw"></i> Manage User
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="">View User</a>
+                <a class="dropdown-item" href="{% url 'c_users'%}">View User</a>
 
  
             </div>
@@ -92,7 +92,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="" class="nav-link text-dark bg-light">
+            <a href="{% url 'user_logout'%}" class="nav-link text-dark bg-light">
                 <i class="fas fa-sign-out-alt mr-3 text-primary fa-fw"></i>
                 Logout
             </a>
@@ -104,7 +104,7 @@
 <!--vertical navbar end-->
 <!--page content holder-->
 <div class="page-content p-4" id="content">
-    <a href="" title="logout" class="float-right text-white"><i class="fas fa-sign-out-alt fa-2x"></i></a>
+    <a href="{% url 'user_logout'%}" title="logout" class="float-right text-white"><i class="fas fa-sign-out-alt fa-2x"></i></a>
 
  
     <!--toggle btn-->

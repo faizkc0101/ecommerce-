@@ -116,6 +116,7 @@ def verify(request):
     return render(request, 'accounts/verify.html')
 
 
+
 def user_login(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -125,11 +126,16 @@ def user_login(request):
         if user is not None:
             login(request, user)
             messages.success(request, 'You are logged in')
+
+            if user.is_staff:
+                return redirect('admindashboard')  
+            
             return redirect('main')
         else:
             messages.error(request, 'Invalid login credentials')
 
     return render(request, 'accounts/login.html')
+
 
 
 @login_required(login_url='user_login')

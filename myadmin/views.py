@@ -102,3 +102,22 @@ def delete_product(request, pid):
     product.delete()
     messages.success(request, "Product Deleted")
     return redirect('view_product')
+
+
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
+from accounts.models import CustomUser
+  
+
+@login_required
+def c_users(request):
+    users = CustomUser.objects.all() 
+    return render(request, 'myadmin/c_users.html', {'users': users})
+
+@login_required
+def user_status(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    user.is_active = not user.is_active 
+    user.save()
+    return redirect('c_users')  
