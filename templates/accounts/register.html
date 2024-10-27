@@ -51,13 +51,9 @@
                     <div class="d-flex align-items-center justify-content-center mb-3">
                         <h3>Sign Up</h3>
                     </div>
-                    {% if messages %}
-                    <div class="alert alert-info">
-                     {% for message in messages %}
-                       {{ message }}<br>
-                     {% endfor %}
+
                    </div>
-                  {% endif %}
+                  
                     <form method="POST">
                       {% csrf_token %}
                      

@@ -1,76 +1,60 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from .models import *
-from accounts.models import UserProfile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+
+from .models import *
+from accounts.models import UserProfile
+
+def home(request):
+    #admin can  add carousel from backend 
+    carousel = Carousel.objects.all()
+    latest_products = Product.objects.all().order_by('-id')[:10]
+    return render(request,'main/home.html',{'carousel':carousel,'latest_products':latest_products})
 
 
 def about(request):
     return render(request, 'main/about.html')
 
+
 def contact(request):
     return render(request, 'main/contact.html')
 
-def home(request):
-    return render(request,'main/home.html')
 
-def index(request):
-    return render(request,'navigation.html')
-
-
-
-def main(request):
-    #admin can  add carousel from backend 
-    carousel = Carousel.objects.all()
-    latest_products = Product.objects.all().order_by('-id')[:10]
-    
-
-    context = {'carousel': carousel,'latest_products':latest_products}
-
-    return render(request, 'main/index.html',context)
-
-# product fetching function all or category wase
+# show product all or catgory wase
 def user_product(request, pid):
+    #all prdct
     if pid == 0:
-        product = Product.objects.all()  # get all prodect 
+        product = Product.objects.all()
         selected_category = "All category"
+    #catgry ws
     else:
-        category = get_object_or_404(Category, id=pid)  #get wich category we select from id
-        product = Product.objects.filter(category=category) #get product with category
+        category = get_object_or_404(Category, id=pid) 
+        product = Product.objects.filter(category=category)
         selected_category = category.name 
    
-    allcategory = Category.objects.all()  # Get all categories 
+    allcategory = Category.objects.all() 
 
     if not product.exists():
         messages.warning(request, "No products available in this category.")
 
-    context = {
-        'product': product,
-        'allcategory': allcategory,
-        'selected_category':selected_category,    
-    }
+    context = {'product': product,'allcategory': allcategory,
+                'selected_category':selected_category,}
     return render(request, "main/user-product.html", context)
 
-# selected poduct details
+#single poduct 
 def product_detail(request, pid):
     product = get_object_or_404(Product, id=pid)
     
-    # fetch latest added 10 product
+    # latest  10 product
     latest_products = Product.objects.exclude(id=pid).order_by('-id')[:10]
 
-    context = {
-        'product': product,
-        'latest_products': latest_products
-    }
+    context = {'product': product,'latest_products': latest_products}
+
     return render(request, "main/product_detail.html", context)
 
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
-from .models import Product, Cart, CartItem
 
-@login_required
+@login_required(login_url='user_login')
 def add_to_cart(request, pid):
     product = Product.objects.get(id=pid)
 
@@ -92,16 +76,17 @@ def add_to_cart(request, pid):
     return redirect('cart_view')
 
 
-@login_required
+@login_required(login_url='user_login')
 def cart_view(request):
+
     cart, created = Cart.objects.get_or_create(user=request.user)
-    #cartitem fetch with user cart
     items = CartItem.objects.filter(cart=cart)
     total = cart.total_price
+    
     return render(request, 'main/cart.html', {'cart': cart, 'items': items, 'total': total})
 
 
-@login_required
+@login_required(login_url='user_login')
 def update_cart_item(request, pid, action):
     cart = Cart.objects.get(user=request.user)
     cart_item = CartItem.objects.get(cart=cart, product_id=pid)
@@ -120,51 +105,6 @@ def remove_cart_item(request, pid):
     cart = Cart.objects.get(user=request.user)
     cart_item = CartItem.objects.get(cart=cart, product_id=pid)
     cart_item.delete()
+    messages.warning(request,'remove product from cart')
     return redirect('cart_view')  
 
-# after payment i wil use later
-def booking(request):
-    cart = Cart.objects.get(user=request.user)
-    cart_items = cart.cartitem_set.all()
-    
-    if not cart_items.exists():
-        messages.error(request, "Your cart is empty.")
-        return redirect('cart')
-
-    total = cart.total_price  
-
-    user_profile = UserProfile.objects.get(user=request.user)
-
-    if request.method == "POST":
-    
-        booking = Booking.objects.create(user=request.user, total=total)
-        booking.products.add(*cart_items) 
-        cart.cartitem_set.all().delete() 
-        messages.success(request, "Your order has been booked successfully!")
-        return redirect('home')
-
-    context = {
-        'cart_items': cart_items,
-        'total': total,
-        'user_profile': user_profile,
-        'user': request.user,
-    }
-    return render(request, "main/booking.html", context)
-
-def myOrder(request):
-    order = Booking.objects.filter(user=request.user)
-    return render(request, "main/my_order.html", locals())
-
-def user_order_track(request, pid):
-    order = Booking.objects.get(id=pid)
-    orderstatus = ORDER_STATUS
-    return render(request, "main/user-order-track.html", locals())
-
-def change_order_status(request, pid):
-    order = Booking.objects.get(id=pid)
-    status = request.GET.get('status')
-    if status:
-        order.status = status
-        order.save()
-        messages.success(request, "Order status changed.")
-    return redirect('myorder')

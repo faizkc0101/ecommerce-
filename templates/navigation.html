@@ -58,7 +58,7 @@
                 {% else %}
                     
                     {% comment %} <li class="nav-item"><a href="" class="nav-link">Feedback</a></li> {% endcomment %}
-                    <li class="nav-item"><a href="{% url 'myorder' %}" class="nav-link">My Order</a></li>
+                    {% comment %} <li class="nav-item"><a href="{% url 'myorder' %}" class="nav-link">My Order</a></li> {% endcomment %}
                     <li class="nav-item"><a href="{% url 'cart_view' %}" class="nav-link">My Cart</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -77,14 +77,10 @@
     </div>
 </nav>
 <!-- End Navigation -->
+{% include 'alert.html' %}
+{% block content %}
+{% endblock content %}
 
-{% block content %}{% endblock content %}
-
-{% for message in messages %}
-    <script>
-        alert('{{ message }}');
-    </script>
-{% endfor %}
 
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"

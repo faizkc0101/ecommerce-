@@ -120,10 +120,6 @@
     {% endblock %}
 </div>
 <!--end page content holder-->
-{% for i in messages %}
-<script>
-    alert('{{i}}');
-</script>
-{% endfor %}
+{% include "alert.html" %}
 </body>
 </html>

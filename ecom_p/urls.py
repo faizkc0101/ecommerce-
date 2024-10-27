@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.urls import path,include
 
@@ -10,4 +9,5 @@ urlpatterns = [
     path('', include('main.urls')),
     path('myadmin/',include('myadmin.urls')),
     path('accounts/',include('accounts.urls')),
+    path('order/',include('order.urls'),)
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

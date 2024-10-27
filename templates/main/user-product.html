@@ -8,7 +8,7 @@
 <div class="d-flex" id="wrapper">
   <!-- Sidebar -->
   <div class="bg-light border-right" id="sidebar-wrapper">
-    <div class="sidebar-heading">Start Filtering</div>
+    <div class="sidebar-heading">Filtering</div>
     <div class="list-group list-group-flush">
       <a href="{% url 'user_product' 0 %}" class="list-group-item list-group-item-action bg-light">All Products</a>
       {% for i in allcategory %}
@@ -32,7 +32,10 @@
           <div class="col-sm-6 col-md-3 mb-4">
             <div class="card h-100 shadow-sm border-light"> <!-- Added shadow and border light -->
               {% if j.image %}
-                <img class="card-img-top img-thumbnail" loading="lazy" src="{{ j.image.url }}" alt="{{ j.name }}" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;"> <!-- Increased height and added border-radius -->
+              <a href="{% url 'product_detail' j.id %}">
+                <img class="card-img-top img-thumbnail" loading="lazy" src="{{ j.image.url }}" alt="{{ j.name }}" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;">
+             </a>
+            
               {% else %}
                 <img class="card-img-top img-thumbnail" loading="lazy" src="{% static 'images/default.jpg' %}" alt="default-img" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;"> <!-- Increased height and added border-radius -->
               {% endif %}

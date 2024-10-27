@@ -12,7 +12,7 @@ def adminLogin(request):
         try:
             if user.is_staff:
                 login(request, user)
-                messages.success(request,'User login successfully')
+                messages.success(request,'admin login successfully')
                 return redirect('admindashboard')
             else:
                 messages.error(request,'Invalid Credentials')

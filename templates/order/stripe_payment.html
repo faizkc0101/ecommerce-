@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stripe Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h2>Complete Your Payment</h2>
+    <p>Total Amount: ${{ amount }}</p>
+    <form id="payment-form">
+        <div id="card-element"></div>
+        <button id="submit">Pay Now</button>
+        <div id="error-message"></div>
+    </form>
+
+    <script>
+        const stripe = Stripe('{{ stripe_publishable_key }}');
+        const elements = stripe.elements();
+        const cardElement = elements.create('card');
+        cardElement.mount('#card-element');
+
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const { paymentIntent, error } = await stripe.confirmCardPayment('{{ client_secret }}', {
+                payment_method: {
+                    card: cardElement,
+                }
+            });
+
+            if (error) {
+                // Show error to your customer (e.g., insufficient funds)
+                document.getElementById('error-message').textContent = error.message;
+            } else {
+                // The payment has been processed!
+                if (paymentIntent.status === 'succeeded') {
+                    window.location.href = "{% url 'order_confirmation' order_id %}"; // Redirect to confirmation page
+                }
+            }
+        });
+    </script>
+</body>
+</html>

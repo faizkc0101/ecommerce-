@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation</title>
+</head>
+<body>
+    <h2>Order Confirmation</h2>
+    <p>Thank you for your order! Your order ID is {{ order.id }}.</p>
+    <p>Status: {% if order.is_paid %}Paid{% else %}Pending{% endif %}</p>
+    <h3>Order Details:</h3>
+    <ul>
+        <li>Total Amount: ${{ order.total }}</li>
+        <li>Payment Method: {{ order.payment_method }}</li>
+        <li>Shipping Address: {{ order.address.address_line }}, {{ order.address.city }}, {{ order.address.state }} - {{ order.address.postal_code }}, {{ order.address.country }}</li>
+    </ul>
+    <p><a href="{% url 'checkout_selection' %}">Back to Checkout</a></p>
+</body>
+</html>

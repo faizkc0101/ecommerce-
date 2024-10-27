@@ -125,12 +125,13 @@ def user_login(request):
         user = authenticate(username=email, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, 'You are logged in')
+            messages.success(request,  f"{email} welocom .")
 
             if user.is_staff:
+                messages.success(request,'welocom back admin')
                 return redirect('admindashboard')  
             
-            return redirect('main')
+            return redirect('home')
         else:
             messages.error(request, 'Invalid login credentials')
 

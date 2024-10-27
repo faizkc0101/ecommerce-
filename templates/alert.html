@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Alerts Example</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background for the page */
+        }
+        .fade-out {
+            transition: opacity 0.5s ease;
+            opacity: 0;
+        }
+        .alert {
+            margin-top: 15px; /* Optional spacing for the alert container */
+            max-width: 500px; /* Set a maximum width for the alerts */
+            margin-left: auto; /* Center the alert */
+            margin-right: auto; /* Center the alert */
+        }
+    </style>
+</head>
+<body>
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert 
+                    {% if message.tags == 'success' %}alert-success
+                    {% elif message.tags == 'warning' %}alert-warning
+                    {% elif message.tags == 'error' %}alert-danger
+                    {% elif message.tags == 'info' %}alert-info
+                    {% else %}alert-secondary
+                    {% endif %}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Optional: Add some JavaScript to automatically hide alerts after a few seconds -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.classList.add('fade-out');
+                    alert.style.display = 'none';
+                }, 5000); // Hide after 5 seconds
+            });
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -50,11 +50,7 @@
               <div class="d-flex align-items-center justify-content-center mb-3">
                   <h3>Login</h3>
               </div>
-              {% if messages %}
-               <div class="alert alert-info">
-                {% for message in messages %}
-                  {{ message }}<br>
-                {% endfor %}
+{% include "alert.html" %}
               </div>
              {% endif %}
               
