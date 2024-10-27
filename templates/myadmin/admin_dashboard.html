@@ -1,105 +1,126 @@
-{% extends 'myadmin/admin_base.html' %}
-{% block main  %}
-<style>
-.glow {
-  font-size: 80px;
-  color: #fff;
-  text-align: center;
-  -webkit-animation: glow 1s ease-in-out infinite alternate;
-  -moz-animation: glow 1s ease-in-out infinite alternate;
-  animation: glow 1s ease-in-out infinite alternate;
-}
-@-webkit-keyframes glow {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-  }
-  to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
-  }
-}
-/* Rounded border */
-hr.rounded {
-  border-top: 8px solid lightblue;
-  border-radius: 5px;
-}
-</style>
-<div class="row">
-    <div class="col-sm-3 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">Total Users</h4>
-                <h5 style="color : #F1948A">121</h5>
+{% extends "myadmin/admin_base.html" %}
+{% block content %}
+
+            <!-- Sale & Revenue Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-line fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Today Sale</p>
+                                <h6 class="mb-0">$1234</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Sale</p>
+                                <h6 class="mb-0">$1234</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-area fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Today Revenue</p>
+                                <h6 class="mb-0">$1234</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Revenue</p>
+                                <h6 class="mb-0">$1234</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
+            <!-- Sale & Revenue End -->
+
+
+            <!-- Sales Chart Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Worldwide Sales</h6>
+                                <a href="">Show All</a>
+                            </div>
+                            <canvas id="worldwide-sales"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Salse & Revenue</h6>
+                                <a href="">Show All</a>
+                            </div>
+                            <canvas id="salse-revenue"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+            <!-- Sales Chart End -->
+             
+
+            <!-- Chart Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Single Line Chart</h6>
+                            <canvas id="line-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Multiple Line Chart</h6>
+                            <canvas id="salse-revenue"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Single Bar Chart</h6>
+                            <canvas id="bar-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Multiple Bar Chart</h6>
+                            <canvas id="worldwide-sales"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Pie Chart</h6>
+                            <canvas id="pie-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Doughnut Chart</h6>
+                            <canvas id="doughnut-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Chart End -->
+
+
+
+
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
-    <div class="col-sm-3 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">Total Products</h4>
-                <h5 style="color : #F1948A">112</h5>
-            </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-3 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">Total Category</h4>
-                <h5 style="color : #F1948A">231</h5>
-            </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-3 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">New Order</h4>
-                <h5 style="color : #F1948A"> 111</h5>
-            </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-4 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">Total Order</h4>
-                <h5 style="color : #F1948A"> 243</h5>
-            </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-4 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">Total Feedback</h4>
-                <h5 style="color : #F1948A"> 1223</h5>
-            </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-4 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">Total Reviews</h4>
-                <h5 style="color : #F1948A"> 1134</h5>
-            </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock  %}
+
+{% endblock content %}

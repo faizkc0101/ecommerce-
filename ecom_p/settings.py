@@ -48,7 +48,7 @@ WSGI_APPLICATION = 'ecom_p.wsgi.application'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Use Path for consistency
+        'DIRS': [BASE_DIR / 'templates'],  
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,5 +120,5 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL= False
 
 
-STRIPE_SECRET_KEY = 'sk_test_51QE5iCP9fDXGbwDwDjSkss8x6CN45zbGAL03McUHV8yxaUDdbTP4TQaWI63YsrPDeOEkyGDOFT1c0KcL56Chf9aO00y7CoTtB8'  # Replace with your actual secret key
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51QE5iCP9fDXGbwDwFuklzyNpX1ZTlnWOcKDDlZNYWkaE0WchKGOSL66UwPctPf3eZpyjTpmbn3ERwASXTDwuc5HB00oXnuaXrx'  # Replace with your actual publishable key
+STRIPE_SECRET_KEY = 'sk_test_51QE5iCP9fDXGbwDwDjSkss8x6CN45zbGAL03McUHV8yxaUDdbTP4TQaWI63YsrPDeOEkyGDOFT1c0KcL56Chf9aO00y7CoTtB8' 
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51QE5iCP9fDXGbwDwFuklzyNpX1ZTlnWOcKDDlZNYWkaE0WchKGOSL66UwPctPf3eZpyjTpmbn3ERwASXTDwuc5HB00oXnuaXrx' 

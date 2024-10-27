@@ -1,20 +1,21 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from .models import CustomUser,UserProfile
-from django.contrib.auth.decorators import login_required
-import random
-from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
 
 from django.core.mail import send_mail
-from django.utils import timezone
-from datetime import timedelta
-from django.views.decorators.cache import cache_control
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth import update_session_auth_hash 
 
+from django.utils import timezone
+from datetime import timedelta
+
+from .models import CustomUser,UserProfile
+from django.conf import settings
+import random
 
 def user_register(request):
     if request.method == 'POST':
@@ -25,7 +26,7 @@ def user_register(request):
         phone_field = request.POST.get('phone_field')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
-        address = request.POST.get('address')
+        
 
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
@@ -59,7 +60,7 @@ def user_register(request):
                 'email': email,
                 'username': username,
                 'password': password,
-                'address':address,
+                
             }
 
             messages.success(request, "OTP has been sent to your email for verification.")
@@ -94,11 +95,7 @@ def verify(request):
                     phone_field =user_data['phone_field'],
                 )
                 
-              
-                UserProfile.objects.create(
-                    user=user,
-                    address=user_data['address']
-                )
+            
 
                 user.is_active = True  
                 user.save()
@@ -209,59 +206,59 @@ def newpassword(request, uidb64, token):
 
 @login_required
 def profile(request):
-   
     if request.user.is_staff or request.user.is_superuser:
-        return redirect('admindashboard')  
-    
-    data = UserProfile.objects.get(user=request.user)
+        return redirect('admindashboard')
+
+   
+    data = CustomUser.objects.get(id=request.user.id)
 
     if request.method == "POST":
-        fname = request.POST['fname']
-        lname = request.POST['lname']
-        email = request.POST['email']
-        address = request.POST['address']
-        phone_field = request.POST['phone_field']
-        
-        if 'image' in request.FILES:
-            image = request.FILES['image']
-            data.image = image
-            data.save()
-
+        fname = request.POST.get('fname')
+        lname = request.POST.get('lname')
+        phone_field = request.POST.get('phone_field') 
        
-       
-        UserProfile.objects.filter(id=data.id).update(phone_field=phone_field, address=address)
+ 
+        CustomUser.objects.filter(id=data.id).update(
+            first_name=fname,
+            last_name=lname,
+            phone_field=phone_field
+        )
 
         messages.success(request, "Profile updated")
         return redirect('profile')
 
-    return render(request, 'accounts/profile.html', locals())
+    return render(request, 'accounts/profile.html', {'data': data})
 
 
 
+from django.contrib.auth import update_session_auth_hash
 
+
+@login_required
 def change_password(request):
     if request.method == 'POST':
-        o = request.POST.get('old')  
-        n = request.POST.get('new')   
-        c = request.POST.get('confirm')  
+        o = request.POST.get('o') 
+        n = request.POST.get('n')  
+        c = request.POST.get('n1') 
 
-        user = authenticate(email=request.user.email, password=o) 
+        
+        user = authenticate(email=request.user.email, password=o)
 
         if user:
             if n == c:
                 user.set_password(n)  
-                user.save()  
+                user.save()
 
                 
                 update_session_auth_hash(request, user)
 
                 messages.success(request, "Password Changed")
-                return redirect('main')
+                return redirect('home')  
             else:
                 messages.error(request, "New passwords do not match")
-                return redirect('change_password')
         else:
-            messages.error(request, "Invalid old password")
-            return redirect('change_password')
+            messages.error(request, "Invalid current password")
 
     return render(request, 'accounts/change_password.html')
+
+

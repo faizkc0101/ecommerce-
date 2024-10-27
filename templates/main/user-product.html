@@ -49,7 +49,7 @@
                     - Rs. {{ j.price }}
                   {% endif %}
                 </h6>
-                <p class="card-text" style="font-size: 14px;">{{ j.description|truncatechars:100 }}</p> <!-- Truncate long descriptions -->
+                <p class="card-text" style="font-size: 14px;">{{ j.description|truncatechars:40}}</p> <!-- Truncate long descriptions -->
                 <div class="mt-auto"> <!-- Use mt-auto to push buttons to the bottom -->
                   <a href="{% url 'add_to_cart' j.id %}" class="btn btn-info btn-block"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
                   <a href="{% url 'product_detail' j.id %}" class="btn btn-light btn-block">View</a>
@@ -78,4 +78,7 @@
     $("#wrapper").toggleClass("toggled");
   });
 </script>
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top " id="backToTop">
+  <i class="fas fa-arrow-up"></i> <!-- FontAwesome icon for better styling -->
+</a>
 {% endblock content %}

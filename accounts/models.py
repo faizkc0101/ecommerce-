@@ -20,3 +20,5 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.email
 
+# username, firstname, lastname, email, is_active, is_staff, is_superuser,
+# iast_login, datejoined

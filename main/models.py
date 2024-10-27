@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 class Carousel(models.Model):
     title = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
@@ -9,12 +7,14 @@ class Carousel(models.Model):
     def __str__(self):
         return self.title
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
+
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
@@ -30,8 +30,6 @@ class Product(models.Model):
         return self.name
 
 
-
-#cart setup
 from django.conf import settings
 
 class Cart(models.Model):
@@ -42,11 +40,18 @@ class Cart(models.Model):
     def __str__(self):
         return f"Cart of {self.user.email}"
 
+    # @property
+    # def total_price(self):
+    #     # Calculate the total 
+    #     total = sum(item.subtotal() for item in self.cartitem_set.all())
+    #     return total
     @property
     def total_price(self):
-        # Calculate the total 
-        total = sum(item.subtotal() for item in self.cartitem_set.all())
+        total = 0
+        for item in self.cartitem_set.all():
+            total += item.subtotal()  
         return total
+
 
     
 

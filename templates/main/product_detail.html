@@ -6,8 +6,8 @@
 
     <link href="{% static 'css/product-detail.css' %}" rel="stylesheet"/>
 
-    <section id="product-detail" class="section-bg ">
-        <div class="container">
+    <section id="product-detail" class="section-bg  ">
+        <div class="container ">
             <div class="text-center mb-4 title_bx">
                 <h3 class="title">Product Detail</h3>
             </div>
@@ -17,8 +17,8 @@
                         <img id="product-img" class="img-fluid" src="{{ product.image.url }}" alt="{{ product.name|default:'Product Image' }}">
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="product-detail-content">
+                <div class="col-md-6 ">
+                    <div class="product-detail-content ">
                         <h2 class="product-name">{{ product.name }}</h2>
                         <div class="price-box">
                             <p><strong>Price:</strong> Rs. {{ product.price }}</p>
@@ -26,10 +26,10 @@
                                 <p>Discounted Price: <span class="text-danger">Rs. {{ product.id|applydiscount }}</span></p>
                             {% endif %}
                         </div>
-                        <p class="product-description"><strong>Description:</strong> {{ product.description }}</p>
+                        <p class="product-description mt-3 mb-3"><strong>Description:</strong> {{ product.description }}</p>
 
                         <form action="" method="post">
-                            <div class="btn-group">
+                            <div class="btn-group mt-3">
                                 <button class="btn btn-success " type="button">
                                     <i class="fa fa-shopping-cart"></i> Buy Now
                                 </button>
@@ -79,7 +79,10 @@
             </div>
         </div>
     </section>
-
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top " id="backToTop">
+        <i class="fas fa-arrow-up"></i> <!-- FontAwesome icon for better styling -->
+    </a>
+    
 
   
 {% endblock  %}

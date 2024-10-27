@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import *
-from accounts.models import UserProfile
+from main.models import *
+
 
 def home(request):
     #admin can  add carousel from backend 
@@ -47,7 +47,7 @@ def product_detail(request, pid):
     product = get_object_or_404(Product, id=pid)
     
     # latest  10 product
-    latest_products = Product.objects.exclude(id=pid).order_by('-id')[:10]
+    latest_products = Product.objects.exclude(id=pid).order_by('-id')[:4]
 
     context = {'product': product,'latest_products': latest_products}
 

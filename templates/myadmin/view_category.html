@@ -1,38 +1,34 @@
-{% extends 'myadmin/admin_base.html' %}
-{% block main  %}
-
-<div class="card shadow">
-    <div class="card-body">
-
-        <h5 class="p-2" style="border-bottom: 2px solid orange;">All Category</h5>
-        <div class="container-fluid">
-
-            <table class="table table-bordered table-sm" id="example">
+{% extends "myadmin/admin_base.html" %}
+{% block content %}
+<div class="col-sm-12 col-xl-6">
+    <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-4">Categories</h6>
+        <a href="{%url 'add_category'%}">Add Category</a>
+        <div class="table-responsive">
+            <table class="table table-dark">
                 <thead>
-                <tr>
-                    <th>S. No.</th>
-                    <th>Category Name</th>
-                    <th>Creation Date</th>
-                    <th>Action</th>
-                </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Category Name</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {% for i in category %}
-                <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{i.name}}</td>
-                    <td>{{i.created}}</td>
-                    <td>
-                        <a href="{% url 'edit_category' i.id %}" class="text-success">Edit</a>
-                        <a href="{% url 'delete_category' i.id %}" class="text-danger"
-                           onclick="return confirm('Are You Sure?')">Delete</a></td>
-                </tr>
-                {% endfor %}
-                </tbody>
+                    {% for i in category %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{i.name}}</td>
+                        <td>{{i.created}}</td>
+                        <td>
+                            <a href="{% url 'edit_category' i.id %}" class="text-success">Edit</a>
+                            <a href="{% url 'delete_category' i.id %}" class="text-danger"
+                               onclick="return confirm('Are You Sure?')">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
             </table>
         </div>
     </div>
 </div>
-
-
-{% endblock %}
+{% endblock content %}

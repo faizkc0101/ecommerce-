@@ -25,7 +25,7 @@ class Orders(models.Model):
         (2, "Dispatched"),
         (3, "On the way"),
         (4, "Delivered"),
-        (5, "Cancelled"),
+        (5, "Cancelled"), 
         (6, "Returned")
     )
     status = models.IntegerField(choices=ORDER_STATUS, default=1) 

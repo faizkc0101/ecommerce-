@@ -3,23 +3,23 @@
 /* Change Brand Font */
 .navbar-brand {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 27px;
+  font-size: 30px;
   font-weight: bold;
-  color: #474e5123;
+  color: #000000e7;
   
 }
 
 /* Change Navigation Color */
 .nav-link, .dropdown-item {
-  color: rgba(30, 27, 27, 0.713) !important;
+  color: rgba(48, 51, 54, 0.756) !important;
   font-size: 20px;
 }
 
 /* Force Light Hover Color for Navbar Links */
 .navbar-nav .nav-link:hover,
 .navbar-nav .dropdown-item:hover {
-  color: rgb(1, 5, 11) !important;  /* Lighter green text */
-  background-color: rgba(111, 115, 119, 0.573) !important;  /* Light blue background */
+  color: rgb(4, 4, 4) !important;  /* Lighter green text */
+  background-color: rgba(146, 191, 236, 0.254) !important;  /* Light blue background */
   border-radius: 30px;
 }
 
@@ -33,7 +33,7 @@
 }
 
 #contact a:hover {
-  color: rgb(99, 99, 149);
+  color: rgb(20, 20, 22);
 }
 
 /* Scroll Button */

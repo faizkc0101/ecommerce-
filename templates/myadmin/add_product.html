@@ -1,64 +1,66 @@
-{% extends 'myadmin/admin_base.html' %}
-{% block main %}
+{% extends "myadmin/admin_base.html" %}
+{% block content %}
 
-<div class="card shadow">
-    <div class="card-body">
-        <h5 class="p-2" style="border-bottom: 2px solid orange;">Add Product</h5>
-        <div class="container-fluid">
-            <form action="" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form-row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Product Category</label>
-                            <select name="category" class="form-control" required>
-                                <option value="">Choose Category</option>
-                                {% for i in category %}
-                                <option value="{{i.id}}">{{i.name}}</option>
-                                {% endfor %}
-                            </select>
+<!-- Form Start -->
+<div class="container-fluid pt-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Add Product</h6>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-sm-6 mb-3">
+                            <div class="form-group">
+                                <label>Product Category</label>
+                                <select name="category" class="form-control" required>
+                                    <option value="">Choose Category</option>
+                                    {% for i in category %}
+                                    <option value="{{ i.id }}">{{ i.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="col-sm-6 mb-3">
+                            <div class="form-group">
+                                <label>Product Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="Enter Product Name" required>
+                            </div>
+                        </div>
+    
+                        <div class="col-sm-6 mb-3">
+                            <div class="form-group">
+                                <label>Product Price</label>
+                                <input type="number" name="price" class="form-control" placeholder="Enter Product Price" required min="0" step="0.01">
+                            </div>
+                        </div>
+    
+                        <div class="col-sm-6 mb-3">
+                            <div class="form-group">
+                                <label>Discount (%)</label>
+                                <input type="number" name="discount" class="form-control" placeholder="Enter Discount Percentage" min="0" max="100" step="0.01">
+                            </div>
+                        </div>
+    
+                        <div class="col-sm-6 mb-3">
+                            <div class="form-group">
+                                <label>Product Image</label>
+                                <input type="file" name="image" class="form-control" accept="image/*" required>
+                            </div>
+                        </div>
+    
+                        <div class="col-sm-12 mb-3">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea name="desc" class="form-control" placeholder="Write product description here" rows="4" style="resize: none;" required></textarea>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Product Name</label>
-                            <input type="text" name="name" class="form-control" placeholder="Category Name">
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Product Price</label>
-                            <input type="text" name="price" class="form-control" placeholder="Product Price">
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Discount</label>
-                            <input type="text" name="discount" class="form-control" placeholder="Apply Discount">
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Product Image</label>
-                            <input type="file" name="image" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea name="desc" class="form-control" placeholder="write description here"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <input type="submit" value="Submit" class="m-2 px-3 btn btn-primary">
-            </form>
+                    <input type="submit" value="Submit" class="m-2 px-3 btn btn-primary">
+                </form>
+            </div>
         </div>
     </div>
 </div>
-
-{% endblock %}
+{% endblock content %}

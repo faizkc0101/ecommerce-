@@ -4,8 +4,6 @@
 
 <link href="{% static 'css/cart.css' %}" rel="stylesheet"/>
 
-   
-   
     <div class="container mt-5">
         <h2 class="text-center mb-4">My Cart</h2>
         <table class="table table-bordered table-hover">
@@ -31,9 +29,9 @@
                     <td>Rs.{{ item.product.price }}</td>
                     <td>Rs.{{ item.subtotal }}</td>
                     <td>
-                        <a href="{% url 'update_cart_item' item.product.id 'incre' %}" class="btn btn-sm btn-primary">+</a>
-                        <a href="{% url 'update_cart_item' item.product.id 'decre' %}" class="btn btn-sm btn-warning">-</a>
-                        <a href="{% url 'remove_cart_item' item.product.id %}" class="btn btn-sm btn-danger">Remove</a>
+                        <a href="{% url 'update_cart_item' item.product.id 'incre' %}" class="btn btn-outline-dark ">+</a>
+                        <a href="{% url 'update_cart_item' item.product.id 'decre' %}" class="btn btn-outline-dark ">-</a>
+                        <a href="{% url 'remove_cart_item' item.product.id %}" class="btn btn-outline-danger m-2">Remove</a>
                     </td>
                 </tr>
                 {% empty %}
@@ -49,7 +47,7 @@
             </tbody>
         </table>
     
-        <a href="{% url 'checkout_selection'%}" class="btn btn-info mr-2" style="float:right">checkout</a>
+        <a href="{% url 'checkout_selection'%}" class="btn btn-outline-success mr-2" style="float:right">checkout</a>
         
     </div>
 

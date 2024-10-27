@@ -2,79 +2,112 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout Selection</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Your CSS styles here */
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+            background-color: #f8f9fa;
         }
+
         .container {
-            max-width: 800px;
-            margin: auto;
+            margin-top: 20px;
             background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
+
         h2 {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            color: #333;
         }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
+
         .address {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #f9f9f9;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
         }
-        button {
-            padding: 10px 15px;
+
+        .address:hover {
+            border-color: #007bff; /* Change border color on hover */
+            background-color: #f1f1f1; /* Add a subtle background change */
+        }
+
+        .btn-custom {
             background-color: #28a745;
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
         }
-        button:hover {
+
+        .btn-custom:hover {
             background-color: #218838;
+            transform: scale(1.05); /* Slightly enlarge button on hover */
+        }
+
+        .form-select {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 576px) {
+            .btn-custom {
+                width: 100%;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h2>Checkout</h2>
+        <h2 class="text-center">Checkout</h2>
         <h3>Select an Address</h3>
-        <a href="{% url 'add_address'%}">Add new address</a>
+        <a href="{% url 'add_address' %}" class="btn btn-outline-primary mb-3">Add New Address</a>
+
         {% if addresses %}
             <form method="post">
                 {% csrf_token %}
                 {% for address in addresses %}
-                    <div class="address">
+                    <div class="address p-3">
                         <label>
-                            <input type="radio" name="address_id" value="{{ address.id }}">
-                            {{ address.address_line }}, {{ address.city }}, {{ address.state }} - {{ address.postal_code }}, {{ address.country }}
+                            <input type="radio" name="address_id" value="{{ address.id }}" class="form-check-input">
+                            <strong>{{ address.address_line }}</strong>, {{ address.city }}, {{ address.state }} - {{ address.postal_code }}, {{ address.country }}
                         </label>
                     </div>
                 {% endfor %}
-                <h3>Payment Method</h3>
-                <select name="payment_method">
-                    <option value="STRIPE">Credit/Debit Card</option>
-                    <option value="COD">Cash on Delivery</option>
-                </select>
-                <br><br>
-                <button type="submit">Proceed to Payment</button>
+                
+                <h3 class="mt-4">Payment Method</h3>
+                <div class="mb-3">
+                    <label for="paymentMethod" class="form-label">Choose your payment method:</label>
+                    <select name="payment_method" id="paymentMethod" class="form-select" aria-label="Payment method selection">
+                        
+                        <option value="STRIPE">Credit/Debit Card</option>
+                        <option value="COD">Cash on Delivery</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-custom btn-block">Proceed to Payment</button>
             </form>
         {% else %}
-            <p>No addresses found. <a href="{% url 'add_address' %}">Add an address</a> to proceed.</p>
+            <div class="alert alert-warning" role="alert">
+                No addresses found. <a href="{% url 'add_address' %}" class="alert-link">Add an address</a> to proceed.
+            </div>
         {% endif %}
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
 </body>
+
 </html>

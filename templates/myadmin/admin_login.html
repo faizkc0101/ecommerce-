@@ -1,46 +1,32 @@
-{% load static %}
-<html>
-<head>
-</head>
-<body >
-{% include 'navigation.html' %}
-<hr class="mt-0">
-<div class="row">
-  <div class="col-lg-5 m-auto">
-    <div class="card mt-5 bg-dark">
-      <div class="card-title text-center mt-3">
-          
-          <h2 class="text-white">Admin Login</h2>
-      </div>
-      <div class="card-body">
-        <form method="post">
-          {% csrf_token %}
-          <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fa fa-user fa-2x"></i>
-                </span>
-              </div>
-              <input type="text" name="username" class="form-control py-4" placeholder="UserName">
-          </div>
-          <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fa fa-lock fa-2x"></i>
-                </span>
-              </div>
-              <input type="password" name="password" class="form-control py-4" placeholder="Password">
-          </div>
-          <input type="submit" value="Login" class="btn btn-success px-5">
-          <a href="{% url 'home' %}" class="float-right mt-2 text-white"><i class="fas fa-angle-double-left"></i> Go Back To HomePage </i></a>
-        </form>
-      </div>
+{% extends "accounts/ac_base.html" %}
+{% block content %}
+   <!-- Sign In Start -->
+     <div class="container-fluid">
+        <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+                <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <a href="#" class="">
+                            <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>Admin</h3>
+                        </a>
+                        <h3>Login</h3>
+                    </div>
+                <form method="post">
+                {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name='username'>
+                        <label for="floatingInput">Email address</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name='password'>
+                        <label for="floatingPassword">Password</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
+                </form>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-</body>
-{% if msg %}
-<script>
-    alert('{{msg}}');
-</script>
-{% endif %}
+    <!-- Sign In End -->
+    {% endblock content %}
