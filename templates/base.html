@@ -34,22 +34,34 @@
 
 <!-- Start Navigation -->
 <nav class="navbar navbar-expand-sm navbar-light">
-    <div class="container-fluid">
-        <h1 class="navbar-brand " href="#">BLACK ROCK</h1>
+    <div class="container-fluid d-flex align-items-center">
+        <!-- Brand -->
+        <a class="navbar-brand mr-3" href="#">BLACK ROCK</a>
+
+        <!-- Toggle button for mobile view -->
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#myMenu" aria-controls="myMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
+        <!-- Search bar -->
+        <form action="{%url 'search'%}" method="GET" class="form-inline mx-auto">
+            <div class="input-group">
+                <input class="form-control rounded-5" type="search" placeholder="Search.." name="keyword" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-outline" type="submit">
+                        <i class="fas fa-search"></i> <!-- Font Awesome search icon -->
+                    </button>
+                </div>
+            </div>
+        </form>
         
 
-        <div class="collapse navbar-collapse text-center" id="myMenu">
-            <ul class="navbar-nav pl-5 custom-nav ml-auto">
-                <li class="nav-item">
-                    <a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'user_product' 0 %}" class="nav-link ">Product</a>
-                </li>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse justify-content-end" id="myMenu">
+            <ul class="navbar-nav custom-nav">
+                <li class="nav-item"><a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+                <li class="nav-item"><a href="{% url 'user_product' 0 %}" class="nav-link">Product</a></li>
                 <li class="nav-item"><a href="/about/" class="nav-link">About Us</a></li>
                 <li class="nav-item"><a href="/contact/" class="nav-link">Contact Us</a></li>
 
@@ -76,6 +88,7 @@
     </div>
 </nav>
 <!-- End Navigation -->
+
 
 {% include "alert.html" %}
 

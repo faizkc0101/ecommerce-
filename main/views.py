@@ -106,5 +106,21 @@ def remove_cart_item(request, pid):
     cart_item = CartItem.objects.get(cart=cart, product_id=pid)
     cart_item.delete()
     messages.warning(request,'remove product from cart')
-    return redirect('cart_view')  
+    return redirect('cart_view') 
+from django.shortcuts import render
+from django.db.models import Q
+from .models import Product
 
+def search(request):
+    query = request.GET.get('keyword', '')
+    products = Product.objects.all()  # Initialize products with all products
+
+    if query:
+        try:
+            # Filter products by name or category
+            products = products.filter(
+                Q(name__icontains=query) | Q(category__name__icontains=query)
+            )
+        except Exception as e:
+            pass
+    return render(request, 'main/search.html', {'products': products, 'query': query})

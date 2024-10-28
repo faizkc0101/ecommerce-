@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+
+<!-- Display the Search Query -->
+<div class="container-fluid mt-4">
+    {% if query %}
+        <h4 class="text-center mb-4">Search results for "{{ query }}"</h4>
+    {% else %}
+        <h4 class="text-center mb-4">All Products</h4>
+    {% endif %}
+</div>
+
+<!-- Search Results Section -->
+<div class="container-fluid mt-2">
+    <div class="row">
+        {% for j in products %}
+            <!-- Product Card -->
+            <div class="col-sm-6 col-md-3 mb-4">
+                <div class="card h-100 shadow-sm border-light">
+                    {% if j.image %}
+                        <a href="{% url 'product_detail' j.id %}">
+                            <img class="card-img-top img-thumbnail" loading="lazy" src="{{ j.image.url }}" alt="{{ j.name }}" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;">
+                        </a>
+                    {% else %}
+                        <img class="card-img-top img-thumbnail" loading="lazy" src="{% static 'images/default.jpg' %}" alt="default-img" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title text-truncate">{{ j.name }}</h6>
+                        <p class="card-text" style="font-size: 14px;">{{ j.description|truncatechars:40 }}</p>
+                        {% if j.discount %}
+                            <p>
+                                <span class="text-muted text-decoration-line-through">Rs. {{ j.price }}</span>
+                                <br>
+                                <span class="text-danger">Rs. {{ j.id|applydiscount }}</span>
+                            </p>
+                        {% else %}
+                            <p>Rs. {{ j.price }}</p>
+                        {% endif %}
+                        <div class="mt-auto">
+                            <a href="{% url 'add_to_cart' j.id %}" class="btn btn-info btn-block"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                            <a href="{% url 'product_detail' j.id %}" class="btn btn-light btn-block">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <!-- No Products Found Message -->
+            <div class="col-md-12">
+                <div class="card border-0">
+                    <div class="card-body text-center">
+                       
+                        <h4 class="text-muted mt-3">No products found for "{{ query }}"</h4>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

@@ -13,5 +13,7 @@ urlpatterns = [
     path('cart/', views.cart_view, name='cart_view'),
     path('update-cart-item/<int:pid>/<str:action>/', views.update_cart_item, name='update_cart_item'),
     path('remove-cart-item/<int:pid>/', views.remove_cart_item, name='remove_cart_item'),
+    
+    path('search/',views.search,name='search'),
 
 ]
