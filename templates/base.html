@@ -68,7 +68,7 @@
                 {% if not request.user.is_authenticated %}
                     <li class="nav-item"><a href="{% url 'user_login' %}" class="nav-link">Login</a></li>
                     <li class="nav-item"><a href="{% url 'user_register' %}" class="nav-link">Signup</a></li>
-                    <li class="nav-item"><a href="{% url 'admin_login' %}" class="nav-link">Admin Login</a></li>
+                    
                 {% else %}
                     <li class="nav-item"><a href="{% url 'cart_view' %}" class="nav-link">My Cart</a></li>
                     <li class="nav-item dropdown">

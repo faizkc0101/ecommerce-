@@ -1,0 +1,50 @@
+{% extends "myadmin/admin_base.html" %}
+{% block content %}
+
+
+<!-- Table Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Products</h6>
+                <a href="{%url 'add_carousel'%}">Add Product</a>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-dark">
+                        <thead>
+                            <tr>
+                                <th>S.No.</th>
+                                <th>Image</th>
+                                <th>title</th>
+                                <th>description</th>
+                              
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for i in carousel %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>
+                                {% if i.image %}
+                                    <img src="{{ i.image.url }}" style="width:100px"/>
+                                {% else %}
+                                    <span>No image available</span>
+                                {% endif %}
+                                <td>{{i.title}}</td>
+                                <td>{{i.description}}</td>
+
+                                <td>
+                                    <a href="{% url 'eidt_carousel' i.id %}" class="text-success">Edit</a>
+                                    <a href="{% url 'delete_carousel' i.id %}" class="text-danger"
+                                       onclick="return confirm('Are You Sure?')">Delete</a></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+{% endblock content %}

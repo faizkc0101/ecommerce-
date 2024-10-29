@@ -7,7 +7,6 @@ from order.models import Addresss, Orders, Payments
 from django.conf import settings
 import stripe
 
-
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def checkout_view(request):
@@ -28,7 +27,7 @@ def checkout_view(request):
         return redirect('add_address')
         #f"{reverse('add_address')}?total_price={total_price}"
 
-    
+   
     if request.method == "POST":
         payment_method = request.POST.get('payment_method')
         address_id = request.POST.get('address_id')
@@ -150,3 +149,4 @@ def order_confirmation(request, order_id):
 
 
     return render(request, 'order/order_confirmation.html', {'order': order})
+

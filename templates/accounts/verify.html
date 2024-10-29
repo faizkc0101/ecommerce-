@@ -6,11 +6,11 @@
       <div class="col-12 col-sm-10 col-md-8 col-lg-6" style="max-width: 500px;"> <!-- Set max-width here -->
           <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
               <div class="d-flex align-items-center justify-content-center mb-3">
-                  <h3>Login</h3>
+                  <h3>OTP</h3>
               </div>
 
               </div>
-             {% endif %}
+             
               
               <form action="{% url 'verify' %}" method="POST">
                   {% csrf_token %}

@@ -22,35 +22,34 @@
   <div id="page-content-wrapper">
     <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
       <button class="btn btn-info" id="menu-toggle">
-     {{selected_category}}
+        {{ selected_category }}
       </button>
-    </nav> 
+    </nav>
 
     <div class="container-fluid mt-2">
       <div class="row">
-        {% for j in product %}
+        {% for j in page_obj %}
           <div class="col-sm-6 col-md-3 mb-4">
-            <div class="card h-100 shadow-sm border-light"> <!-- Added shadow and border light -->
+            <div class="card h-100 shadow-sm border-light">
               {% if j.image %}
-              <a href="{% url 'product_detail' j.id %}">
-                <img class="card-img-top img-thumbnail" loading="lazy" src="{{ j.image.url }}" alt="{{ j.name }}" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;">
-             </a>
-            
+                <a href="{% url 'product_detail' j.id %}">
+                  <img class="card-img-top img-thumbnail" loading="lazy" src="{{ j.image.url }}" alt="{{ j.name }}" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;">
+                </a>
               {% else %}
-                <img class="card-img-top img-thumbnail" loading="lazy" src="{% static 'images/default.jpg' %}" alt="default-img" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;"> <!-- Increased height and added border-radius -->
+                <img class="card-img-top img-thumbnail" loading="lazy" src="{% static 'images/default.jpg' %}" alt="default-img" style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;">
               {% endif %}
               <div class="card-body d-flex flex-column">
-                <h6 class="card-title text-truncate"> <!-- Truncate long titles -->
+                <h6 class="card-title text-truncate">
                   {{ j.name }} 
                   {% if j.discount %}
-                     <span class="text-muted text-decoration-line-through"><del>Rs. {{ j.price }}</del></span><br><br>
-                     <span class="text-danger"> Rs. {{ j.id|applydiscount }}</span>
+                    <span class="text-muted text-decoration-line-through"><del>Rs. {{ j.price }}</del></span><br><br>
+                    <span class="text-danger"> Rs. {{ j.id|applydiscount }}</span>
                   {% else %}
                     - Rs. {{ j.price }}
                   {% endif %}
                 </h6>
-                <p class="card-text" style="font-size: 14px;">{{ j.description|truncatechars:40}}</p> <!-- Truncate long descriptions -->
-                <div class="mt-auto"> <!-- Use mt-auto to push buttons to the bottom -->
+                <p class="card-text" style="font-size: 14px;">{{ j.description|truncatechars:40 }}</p>
+                <div class="mt-auto">
                   <a href="{% url 'add_to_cart' j.id %}" class="btn btn-info btn-block"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
                   <a href="{% url 'product_detail' j.id %}" class="btn btn-light btn-block">View</a>
                 </div>
@@ -68,6 +67,35 @@
           </div>
         {% endfor %}
       </div>
+
+      <!-- Pagination Controls -->
+        <div class="d-flex justify-content-center my-4">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              {% if page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+
+              <li class="page-item disabled">
+                <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+              </li>
+
+              {% if page_obj.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+
+
     </div>
   </div>
 </div>
@@ -78,7 +106,7 @@
     $("#wrapper").toggleClass("toggled");
   });
 </script>
-<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top " id="backToTop">
-  <i class="fas fa-arrow-up"></i> <!-- FontAwesome icon for better styling -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top" id="backToTop">
+  <i class="fas fa-arrow-up"></i>
 </a>
 {% endblock content %}

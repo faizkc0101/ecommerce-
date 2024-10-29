@@ -1,8 +1,11 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from main.models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from accounts.models import CustomUser
 
 def adminLogin(request):
     if request.method == "POST":
@@ -102,14 +105,7 @@ def delete_product(request, pid):
     product.delete()
     messages.success(request, "Product Deleted")
     return redirect('view_product')
-
-
-
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
-from accounts.models import CustomUser
   
-
 @login_required
 def c_users(request):
     users = CustomUser.objects.all() 
@@ -121,3 +117,33 @@ def user_status(request, user_id):
     user.is_active = not user.is_active 
     user.save()
     return redirect('c_users')  
+
+def view_carousel(request):
+    carousel = Carousel.objects.all()
+    return render(request, 'myadmin/view_carousel.html',{'carousel':carousel})
+
+def add_carousel(request):
+    carousel = Carousel.objects.all()
+    return render(request, 'myadmin/add_carousel.html',{'carousel':carousel})
+
+def edit_carousel(request, pid):
+    carousel = Carousel.objects.get(id=pid)
+   
+    if request.method == "POST":
+        title = request.POST['title']
+        description = request.POST['description']
+        
+        try:
+            image = request.FILES['image']
+            carousel.image = image
+            carousel.save()
+        except:
+            pass
+        
+        Carousel.objects.filter(id=pid).update(title=title, description=description)
+        messages.success(request, "Carousel Updated")
+    return render(request, 'myadmin/eidt_carousel.html', locals())  
+
+def delete_carousel(request,pid):
+    carousel = Carousel.objects.all()
+    return render(request, 'myadmin/delete_carousel.html',{'carousel':carousel})

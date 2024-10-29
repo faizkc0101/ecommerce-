@@ -16,4 +16,9 @@ urlpatterns = [
 
     path('admin/users/', views.c_users, name='c_users'),  
     path('admin/user/status/<int:user_id>/', views.user_status, name='user_status'),
+
+    path('view_carousel/', views.view_carousel, name='view_carousel'),
+    path('eidt_carousel/<int:pid>/',views.edit_carousel,name='eidt_carousel'),
+    path('add_carousel/',views.add_carousel,name='add_carousel'),
+    path('delete_carousel/<int:pid>/',views.delete_carousel,name='delete_carousel'),
 ]

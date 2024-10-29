@@ -20,14 +20,14 @@ def about(request):
 def contact(request):
     return render(request, 'main/contact.html')
 
-
+from django.core.paginator import Paginator
 # show product all or catgory wase
 def user_product(request, pid):
-    #all prdct
+    # All products
     if pid == 0:
         product = Product.objects.all()
         selected_category = "All category"
-    #catgry ws
+    # Filter by category
     else:
         category = get_object_or_404(Category, id=pid) 
         product = Product.objects.filter(category=category)
@@ -38,9 +38,19 @@ def user_product(request, pid):
     if not product.exists():
         messages.warning(request, "No products available in this category.")
 
-    context = {'product': product,'allcategory': allcategory,
-                'selected_category':selected_category,}
+    # Paginator
+    paginator = Paginator(product, 4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+   
+    context = {
+        'page_obj': page_obj, 
+        'allcategory': allcategory,
+        'selected_category': selected_category,
+    }
     return render(request, "main/user-product.html", context)
+
 
 #single poduct 
 def product_detail(request, pid):

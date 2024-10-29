@@ -1,0 +1,51 @@
+{% extends "myadmin/admin_base.html" %}
+{% block content %}
+
+<!-- Form Start -->
+<div class="container-fluid pt-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Update Carousel</h6>
+                
+                {% if messages %}
+                    <div>
+                        {% for message in messages %}
+                            <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <form action="{% url 'eidt_carousel' carousel.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        <label for="title">Title</label>
+                        <input type="text" name="title" class="form-control" value="{{ carousel.title }}" placeholder="Carousel Title" required>
+                    </div>
+
+                    <div class="form-group mb-0">
+                        <label for="image">Carousel Image</label>
+                        <input type="file" name="image" class="form-control" accept="image/*">
+                    </div>
+                    
+                    {% if carousel.image %}
+                        <div class="mb-3">
+                            <label>Current Image</label>
+                            <img src="{{ carousel.image.url }}" style="max-width: 100%; height: auto; margin-top: 10px;">
+                        </div>
+                    {% endif %}
+
+                    <div class="form-group mb-3">
+                        <label for="description">Description</label>
+                        <textarea name="description" class="form-control" placeholder="Write description here" required>{{ carousel.description }}</textarea>
+                    </div>
+
+                    <input type="submit" value="Submit" class="m-2 px-3 btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Form End -->
+
+{% endblock content %}
