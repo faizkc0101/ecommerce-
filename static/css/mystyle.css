@@ -1,39 +1,64 @@
+body {
+  font-family: 'Ubuntu', sans-serif;
+}
 
+/* Navbar Styling */
+.navbar {
+  background-color: #2c3e50;
+  padding: 1rem;
+}
 
-/* Change Brand Font */
 .navbar-brand {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 30px;
+  font-family: Verdana, sans-serif;
+  font-size: 1.8rem;
   font-weight: bold;
-  color: #000000e7;
-  
+  color: #ffffff;
 }
 
-/* Change Navigation Color */
-.nav-link, .dropdown-item {
-  color: rgba(48, 51, 54, 0.756) !important;
-  font-size: 20px;
+.navbar-brand:hover {
+  color: #0a0e0d;
 }
 
-/* Force Light Hover Color for Navbar Links */
-.navbar-nav .nav-link:hover,
-.navbar-nav .dropdown-item:hover {
-  color: rgb(4, 4, 4) !important;  /* Lighter green text */
-  background-color: rgba(146, 191, 236, 0.254) !important;  /* Light blue background */
-  border-radius: 30px;
+.navbar-nav .nav-link {
+  color: rgba(250, 253, 255, 0.8) !important;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
 }
 
-/* Change Footer Social Icon Color */
+.navbar-nav .nav-link:hover {
+  color: #000;
+  background-color: rgba(146, 191, 236, 0.2);
+  border-radius: 10px;
+
+}
+
+/* Search Bar Styling */
+.form-inline .form-control {
+  border-radius: 20px;
+  border: 1px solid #aadbd1;
+  padding: 0.5rem 1rem;
+}
+
+.form-inline .btn-outline {
+  color: #939897;
+  border-color: #c0c7c5;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.form-inline .btn-outline:hover {
+  background-color: #f9fbfad2;
+  color: #fff;
+}
+
+
+/* Footer Links */
 #footer a, #contact a {
   color: #090104;
 }
 
-#footer a:hover {
+#footer a:hover, #contact a:hover {
   color: rgb(127, 139, 216);
-}
-
-#contact a:hover {
-  color: rgb(20, 20, 22);
 }
 
 /* Scroll Button */
@@ -41,12 +66,12 @@
   position: fixed;
   bottom: 20px;
   right: 40px;
-  z-index: 99;
-  border: none;
-  color: rgb(28, 28, 52);
   background: #68777e;
   padding: 10px;
   border-radius: 10px;
+  color: #1c1c34;
+  border: none;
+  transition: all 0.3s ease;
 }
 
 /* Smooth Scrolling */
@@ -54,16 +79,10 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Login Background */
-#login {
-  background-size: 100%;
-  background-position: 0px 80px;
-  background-repeat: no-repeat;
-  opacity: 0.8;
-}
-
-/* Signup Form Background */
-#signupform {
+/* Form Backgrounds */
+#login, #signupform {
   background: url('/static/images/bg_texture.png');
-  color: rgb(149, 136, 136);
+  background-size: cover;
+  color: #949494;
+  opacity: 0.9;
 }

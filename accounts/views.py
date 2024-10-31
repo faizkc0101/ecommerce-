@@ -13,7 +13,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.utils import timezone
 from datetime import timedelta
 
-from .models import CustomUser,UserProfile
+from .models import CustomUser
 from django.conf import settings
 import random
 

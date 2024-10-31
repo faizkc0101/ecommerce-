@@ -1,5 +1,5 @@
 {% include 'alert.html' %}
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +12,6 @@
         body {
             background-color: #f8f9fa;
         }
-
         .container {
             margin-top: 20px;
             background: white;
@@ -20,13 +19,11 @@
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
-
         h2 {
             margin-bottom: 30px;
             font-weight: bold;
             color: #333;
         }
-
         .address {
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -34,31 +31,25 @@
             margin-bottom: 15px;
             transition: border-color 0.3s;
         }
-
         .address:hover {
-            border-color: #007bff; /* Change border color on hover */
-            background-color: #f1f1f1; /* Add a subtle background change */
+            border-color: #007bff;
+            background-color: #f1f1f1;
         }
-
         .btn-custom {
             background-color: #28a745;
             color: white;
             transition: background-color 0.3s, transform 0.2s;
         }
-
         .btn-custom:hover {
             background-color: #218838;
-            transform: scale(1.05); /* Slightly enlarge button on hover */
+            transform: scale(1.05);
         }
-
         .form-select {
             margin-bottom: 20px;
         }
-
         .alert {
             margin-top: 20px;
         }
-
         /* Responsive styling */
         @media (max-width: 576px) {
             .btn-custom {
@@ -70,39 +61,82 @@
 
 <body>
     <div class="container">
-        <h2 class="text-center">Checkout</h2>
-        <h3>Select an Address</h3>
-        <a href="{% url 'add_address' %}" class="btn btn-outline-primary mb-3">Add New Address</a>
+        <div class="row">
+            <div class="col-6">
+                <h2 class="text-center">Checkout</h2>
+                <h3>Select an Address</h3>
+                <a href="{% url 'add_address' %}" class="btn btn-outline-primary mb-3">Add New Address</a>
 
-        {% if addresses %}
-            <form method="post">
-                {% csrf_token %}
-                {% for address in addresses %}
-                    <div class="address p-3">
-                        <label>
-                            <input type="radio" name="address_id" value="{{ address.id }}" class="form-check-input">
-                            <strong>{{ address.address_line }}</strong>, {{ address.city }}, {{ address.state }} - {{ address.postal_code }}, {{ address.country }}
-                        </label>
-                    </div>
-                {% endfor %}
-                
-                <h3 class="mt-4">Payment Method</h3>
-                <div class="mb-3">
-                    <label for="paymentMethod" class="form-label">Choose your payment method:</label>
-                    <select name="payment_method" id="paymentMethod" class="form-select" aria-label="Payment method selection">
+                {% if addresses %}
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for address in addresses %}
+                            <div class="address p-3">
+                                <label>
+                                    <input type="radio" name="address_id" value="{{ address.id }}" class="form-check-input">
+                                    <strong>{{ address.address_line }}</strong>, {{ address.city }}, {{ address.state }} - {{ address.postal_code }}, {{ address.country }}
+                                </label>
+                            </div>
+                        {% endfor %}
                         
-                        <option value="STRIPE">Credit/Debit Card</option>
-                        <option value="COD">Cash on Delivery</option>
-                    </select>
-                </div>
-                
-                <button type="submit" class="btn btn-custom btn-block">Proceed to Payment</button>
-            </form>
-        {% else %}
-            <div class="alert alert-warning" role="alert">
-                No addresses found. <a href="{% url 'add_address' %}" class="alert-link">Add an address</a> to proceed.
+                        <h3 class="mt-4">Payment Method</h3>
+                        <div class="mb-3">
+                            <label for="paymentMethod" class="form-label">Choose your payment method:</label>
+                            <select name="payment_method" id="paymentMethod" class="form-select" aria-label="Payment method selection">
+                                <option value="STRIPE">Credit/Debit Card</option>
+                                <option value="COD">Cash on Delivery</option>
+                            </select>
+                        </div>
+                        <h2>{{total_price}}</h2>
+                        <button type="submit" class="btn btn-custom btn-block">Proceed to Payment</button>
+                    </form>
+                {% else %}
+                    <div class="alert alert-warning" role="alert">
+                        No addresses found. <a href="{% url 'add_address' %}" class="alert-link">Add an address</a> to proceed.
+                    </div>
+                {% endif %}
             </div>
-        {% endif %}
+
+            <div class="col-6">
+                <link href="{% static 'css/cart.css' %}" rel="stylesheet" />
+                <div class="container mt-0">
+                    
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-thumbnail" width="50">
+                                            <span class="ml-2">{{ item.product.name }}</span>
+                                        </div>
+                                    </td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>Rs.{{ item.product.price }}</td>
+                                    <td>Rs.{{ item.subtotal }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">Your cart is empty.</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="3" class="text-right font-weight-bold">Total</td>
+                                <td>Rs. {{ total_price }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

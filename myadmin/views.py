@@ -123,8 +123,15 @@ def view_carousel(request):
     return render(request, 'myadmin/view_carousel.html',{'carousel':carousel})
 
 def add_carousel(request):
-    carousel = Carousel.objects.all()
-    return render(request, 'myadmin/add_carousel.html',{'carousel':carousel})
+    if request.method == "POST":
+        title = request.POST['title']
+        description = request.POST['description']
+        image = request.FILES.get('image') 
+
+        Carousel.objects.create(title=title, description=description, image=image)
+        messages.success(request, "Carousel added")
+    
+    return render(request, 'myadmin/add_carousel.html')
 
 def edit_carousel(request, pid):
     carousel = Carousel.objects.get(id=pid)
@@ -142,8 +149,11 @@ def edit_carousel(request, pid):
         
         Carousel.objects.filter(id=pid).update(title=title, description=description)
         messages.success(request, "Carousel Updated")
+        return redirect('view_carousel')
     return render(request, 'myadmin/eidt_carousel.html', locals())  
 
 def delete_carousel(request,pid):
-    carousel = Carousel.objects.all()
-    return render(request, 'myadmin/delete_carousel.html',{'carousel':carousel})
+    carousel = Carousel.objects.get(id=pid)
+    carousel.delete()
+    return redirect('view_carousel')
+    return render(request, 'myadmin/delete_carousel.html')

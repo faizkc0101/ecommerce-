@@ -117,9 +117,8 @@ def remove_cart_item(request, pid):
     cart_item.delete()
     messages.warning(request,'remove product from cart')
     return redirect('cart_view') 
-from django.shortcuts import render
+
 from django.db.models import Q
-from .models import Product
 
 def search(request):
     query = request.GET.get('keyword', '')
@@ -134,3 +133,26 @@ def search(request):
         except Exception as e:
             pass
     return render(request, 'main/search.html', {'products': products, 'query': query})
+
+
+def add_to_wishlist(request,pid):
+    product = get_object_or_404(Product,id=pid)
+    
+    wishlist,created = Wishlist.objects.get_or_create(user=request.user,product=product)
+    if created:
+        messages.success(request,'product added to wishlist')
+    else:
+        messages.info(request, 'Product is already in your wishlist.')
+
+    return redirect('wishlist')
+
+def remove_from_wishlist(request, pid):
+    product = get_object_or_404(Product, id=pid)
+    Wishlist.objects.filter(user=request.user, product=product).delete() 
+    return redirect('wishlist')
+
+
+def wishlist(request):
+    wishlist = Wishlist.objects.filter(user=request.user)
+    return render(request,'main/wishlist.html',{'wishlist':wishlist})
+

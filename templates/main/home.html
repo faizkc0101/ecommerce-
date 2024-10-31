@@ -83,7 +83,9 @@
                                     <p>Price: Rs. {{ i.price }}</p>
                                 {% endif %}
                             </div>
-                            <a href="{% url 'add_to_cart' i.id %}" class="btn btn-primary btn-block">
+                            <a href="{% url 'add_wishlist' i.id %}"class="btn btn-light btn-block"> Add to Wishlist</a>
+
+                            <a href="{% url 'add_to_cart' i.id %}" class="btn btn-info btn-block">
                                 <i class="fa fa-shopping-cart"></i> Add to Cart
                             </a>
                         </div>

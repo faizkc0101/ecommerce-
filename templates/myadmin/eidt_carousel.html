@@ -15,9 +15,15 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-                
+                  
                 <form action="{% url 'eidt_carousel' carousel.id %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
+                    {% if carousel.image %}
+                        <div class="mb-3">
+                            <label>Current Image</label>
+                            <img src="{{ carousel.image.url }}" style="max-width: 100%; height: auto; margin-top: 10px;">
+                        </div>
+                    {% endif %}
                     <div class="form-group mb-3">
                         <label for="title">Title</label>
                         <input type="text" name="title" class="form-control" value="{{ carousel.title }}" placeholder="Carousel Title" required>
@@ -25,19 +31,14 @@
 
                     <div class="form-group mb-0">
                         <label for="image">Carousel Image</label>
-                        <input type="file" name="image" class="form-control" accept="image/*">
+                        <input type="file" name="image" class="form-control" accept="image/* ">
                     </div>
                     
-                    {% if carousel.image %}
-                        <div class="mb-3">
-                            <label>Current Image</label>
-                            <img src="{{ carousel.image.url }}" style="max-width: 100%; height: auto; margin-top: 10px;">
-                        </div>
-                    {% endif %}
+                    
 
                     <div class="form-group mb-3">
                         <label for="description">Description</label>
-                        <textarea name="description" class="form-control" placeholder="Write description here" required>{{ carousel.description }}</textarea>
+                        <textarea name="description" class="form-control" placeholder="Write description here" >{{ carousel.description }}</textarea>
                     </div>
 
                     <input type="submit" value="Submit" class="m-2 px-3 btn btn-primary">

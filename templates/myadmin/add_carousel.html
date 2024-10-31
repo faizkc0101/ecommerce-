@@ -1,0 +1,43 @@
+{% extends "myadmin/admin_base.html" %}
+{% block content %}
+
+<!-- Form Start -->
+<div class="container-fluid pt-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Add carousel</h6>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+    
+                        <div class="col-sm-6 mb-3">
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" name="title" class="form-control" placeholder="Enter Product Name" required>
+                            </div>
+                        </div>
+    
+
+    
+                        <div class="col-sm-6 mb-3">
+                            <div class="form-group">
+                                <label>Product Image</label>
+                                <input type="file" name="image" class="form-control" accept="image/*" required>
+                            </div>
+                        </div>
+    
+                        <div class="col-sm-12 mb-3">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea name="description" class="form-control" placeholder="Write product description here" rows="4" style="resize: none;" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit" value="Submit" class="m-2 px-3 btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

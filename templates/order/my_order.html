@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>My Orders</h2>
+
+{% if orders %}
+    <table class="table table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Address</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Payment Method</th>
+                <th>Paid</th>
+                <th>Created</th>
+                <th>Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.address }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>Rs. {{ order.total }}</td>
+                    <td>{{ order.get_payment_method_display }}</td>
+                    <td>{{ order.is_paid|yesno:"Yes,No" }}</td>
+                    <td>{{ order.created|date:"Y-m-d H:i" }}</td>
+                    <td>{{ order.updated|date:"Y-m-d H:i" }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>You have no orders.</p>
+{% endif %}
+
+{% endblock content %}

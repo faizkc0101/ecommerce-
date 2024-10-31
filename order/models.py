@@ -21,13 +21,14 @@ class Orders(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     
     ORDER_STATUS = (
-        (1, "Pending"),
-        (2, "Dispatched"),
-        (3, "On the way"),
-        (4, "Delivered"),
-        (5, "Cancelled"), 
-        (6, "Returned")
+        ("Pending", "Pending"),
+        ("Dispatched", "Dispatched"),
+        ("On the way", "On the way"),
+        ("Delivered", "Delivered"),
+        ("Cancelled", "Cancelled"), 
+        ("Returned", "Returned")
     )
+    
     status = models.IntegerField(choices=ORDER_STATUS, default=1) 
     is_paid = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)

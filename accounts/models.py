@@ -10,15 +10,9 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ['username']  
 
     def __str__(self):
-        return self.email
+        return self.username
 
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(CustomUser, null=False, blank=False, on_delete=models.CASCADE)
-    address = models.TextField(null=True, blank=True)
-    
-    def __str__(self):
-        return self.user.email
 
 # username, firstname, lastname, email, is_active, is_staff, is_superuser,
 # iast_login, datejoined

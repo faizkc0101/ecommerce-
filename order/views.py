@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
 
-from main.models import Cart
+from main.models import Cart,CartItem
 from order.models import Addresss, Orders, Payments
 from django.conf import settings
 import stripe
@@ -12,6 +12,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 def checkout_view(request):
     
     cart = get_object_or_404(Cart, user=request.user)
+    items = CartItem.objects.filter(cart=cart)
 
     if not cart.cartitem_set.exists():
         messages.warning(request, "Your cart is empty. Please add items before proceeding to checkout.")
@@ -25,7 +26,7 @@ def checkout_view(request):
 
     if not addresses.exists():
         return redirect('add_address')
-        #f"{reverse('add_address')}?total_price={total_price}"
+        
 
    
     if request.method == "POST":
@@ -62,7 +63,7 @@ def checkout_view(request):
 
     return render(request, 'order/checkout_selection.html', {
         'total_price': total_price / 100, 
-        'addresses': addresses })
+        'addresses': addresses ,'items':items})
 
 
 def handle_address_creation(request):
@@ -150,3 +151,6 @@ def order_confirmation(request, order_id):
 
     return render(request, 'order/order_confirmation.html', {'order': order})
 
+def my_order(request):
+    orders = Orders.objects.filter(user=request.user)
+    return render(request,'order/my_order.html',{'orders': orders})

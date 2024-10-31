@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+
 
 class Carousel(models.Model):
     title = models.CharField(max_length=200, null=True, blank=True)
@@ -30,7 +32,6 @@ class Product(models.Model):
         return self.name
 
 
-from django.conf import settings
 
 class Cart(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -66,6 +67,15 @@ class CartItem(models.Model):
     def subtotal(self):
         return self.quantity * float(self.product.price)
 
+
+
+class Wishlist(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user} X {self.product.name}"
+    
 
 
 
