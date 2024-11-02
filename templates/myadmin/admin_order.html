@@ -1,0 +1,76 @@
+{% extends "myadmin/admin_base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="card shadow ">
+    <div class="card-body">
+        <div class="container-fluid">
+            <h3 class="mb-4">Admin Orders</h3>
+            <form method="post" action="{% url 'admin_update_order_status' %}">
+                {% csrf_token %}
+                <table class="table table-bordered table-hover mt-4">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Order ID</th>
+                            <th>User Email</th>
+                            <th style="width: 20%;">Address</th>
+                            <th>Status</th>
+                            <th>Total (Rs.)</th>
+                            <th>Payment Method</th>
+                            <th>Paid</th>
+                            <th>Order Date</th>
+                            <th>Updated Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.user.username }}</td>
+                            <td>
+                                
+                                {{ order.address.address_line }}
+                                {{ order.address.street }}<br>
+                                {{ order.address.city }}<br>
+                                {{ order.address.state }} - {{ order.address.postal_code }}
+                            </td>
+                            <td>
+                                <select name="status_{{ order.id }}" class="form-select form-select-sm">
+                                    {% for choice, display in order.ORDER_STATUS %}
+                                        <option value="{{ choice }}" {% if order.status == choice %}selected{% endif %}>
+                                            {{ display }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>Rs. {{ order.total|floatformat:2 }}</td>
+                            <td>{{ order.get_payment_method_display }}</td>
+                            <td>{{ order.is_paid|yesno:"Yes,No" }}</td>
+                            <td>{{ order.created|date:"Y-m-d H:i" }}</td>
+                            <td>{{ order.updated|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-primary mt-3 w-100">Update Status</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        width: 100%;
+    }
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+    .form-select-sm {
+        width: 100%;
+    }
+</style>
+
+{% endblock content %}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_tags %}
 {% block content %}
 {% load static %}
 
@@ -41,7 +42,7 @@
                 {% endfor %}
                 <tr>
                     <td colspan="3" class="text-right font-weight-bold">Total</td>
-                    <td>Rs. {{ total }}</td>
+                    <td>Rs. {{ total_discounted }}</td>
                     <td></td>
                 </tr>
             </tbody>
@@ -52,4 +53,31 @@
     </div>
 
 
-{% endblock content %}
+
+<h1>Your Cart</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Discounted Price</th>
+            <th>Original Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.subtotal }}</td>
+            <td>${{ item.product.price|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Total</h2>
+<p>Discounted Total: ${{ total_discounted|floatformat:2 }}</p>
+<p>Original Total: ${{ total_original|floatformat:2 }}</p>
+{% endblock %}

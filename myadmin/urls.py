@@ -21,4 +21,8 @@ urlpatterns = [
     path('eidt_carousel/<int:pid>/',views.edit_carousel,name='eidt_carousel'),
     path('add_carousel/',views.add_carousel,name='add_carousel'),
     path('delete_carousel/<int:pid>/',views.delete_carousel,name='delete_carousel'),
-]
+    path('admin_order/', views.admin_order, name='admin_order'),
+    path('admin/orders/update_status/', views.admin_update_order_status, name='admin_update_order_status'),
+
+
+ ]

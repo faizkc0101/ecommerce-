@@ -67,7 +67,7 @@ def checkout_view(request):
 
 
 def handle_address_creation(request):
-   
+    
     total_price = request.GET.get('total_price')
 
     if request.method == "POST" and request.POST.get('action') == 'create_address':
@@ -154,3 +154,38 @@ def order_confirmation(request, order_id):
 def my_order(request):
     orders = Orders.objects.filter(user=request.user)
     return render(request,'order/my_order.html',{'orders': orders})
+
+
+
+def user_order_track(request, order_id):
+   
+    order = get_object_or_404(Orders, id=order_id, user=request.user)
+    order_status_choices = Orders.ORDER_STATUS 
+
+    return render(request, "order/user-order-track.html", {
+        'order': order,
+        'order_status_choices': order_status_choices,
+       
+    })
+
+
+def change_order_status(request, pid):
+   
+    order = get_object_or_404(Orders, id=pid)
+    status = request.GET.get('status')
+  
+    allowed_transitions = {
+        'Pending': ['Cancelled'],
+        'Delivered': ['Returned'],
+    }
+
+    if status in allowed_transitions.get(order.status, []):
+        order.status = status
+        order.save()
+        messages.success(request, f"Order status updated to '{status}'.")
+    else:
+        messages.error(request, f"Cannot change status from '{order.status}' to '{status}'.")
+
+    return redirect('myorder')
+
+

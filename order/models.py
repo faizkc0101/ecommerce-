@@ -17,7 +17,7 @@ class Addresss(models.Model):
 class Orders(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     address= models.ForeignKey(Addresss, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Non-nullable
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     
     ORDER_STATUS = (
@@ -29,7 +29,7 @@ class Orders(models.Model):
         ("Returned", "Returned")
     )
     
-    status = models.IntegerField(choices=ORDER_STATUS, default=1) 
+    status = models.CharField(choices=ORDER_STATUS,default="Pending") 
     is_paid = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -48,7 +48,7 @@ class Payments(models.Model):
     order = models.OneToOneField(Orders, on_delete=models.CASCADE)
     payment_id = models.CharField(max_length=100, blank=True, null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_status = models.CharField(max_length=50, default='Pending')
+    payment_status = models.CharField(max_length=50, default='Payment_Pending')
 
     def __str__(self):
         return f"Payment {self.payment_id or 'N/A'} for Order {self.order.id}"

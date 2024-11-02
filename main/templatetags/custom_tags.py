@@ -1,22 +1,20 @@
 # your_app/templatetags/custom_tags.py
 
 from django import template
-from main.models import Product  # Ensure this import is correct
+from main.models import Product
 
 register = template.Library()
 
 @register.filter
-def applydiscount(product_id):
+def applydiscount(product):
+    if not product:
+        return "no discount"
+    
     try:
-        product = Product.objects.get(id=product_id)
-        discount_percentage = 0.10  # Example: 10% discount
-        
-        # Ensure that product.price is converted to a float
-        original_price = float(product.price)  # Convert to float
-        discounted_price = original_price * (1 - discount_percentage)
-
-        return round(discounted_price, 2)  # Return the discounted price rounded to 2 decimal places
-    except Product.DoesNotExist:
-        return 'no discount'  # Handle case where product does not exist
+        price = float(product.price)
+        discount = float(product.discount) if product.discount else 0
+        final_price = price - discount
+        return round(final_price, 2)
+    
     except ValueError:
-        return "no dicount"  # Handle case where price conversion fails
+        return "invalid price"

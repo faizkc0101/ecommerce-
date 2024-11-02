@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded">
+        <div class="card-body">
+            <h4 class="card-title text-center">Track Your Order Status</h4>
+            <p class="card-description text-muted text-center">Dashboard <code>order-status</code></p>
+            <hr/>
+            <h5 class="text-muted">Order Tracking</h5>
+            <ul class="list-unstyled progress-list">
+                {% for status, display in order_status_choices %}
+                <li class="d-flex align-items-center mb-4 position-relative">
+                    <div class="icon-container me-3">
+                        <i class="fas fa-check-circle {% if status == order.status %}text-success{% else %}text-muted{% endif %}"></i>
+                    </div>
+                    <div class="step-label {% if status == order.status %}text-success fw-bold{% endif %}">
+                        {{ display }}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<style>
+    .progress-list {
+        position: relative;
+        padding-left: 30px; /* Adjust for the icon */
+    }
+    .progress-list::before {
+        content: '';
+        position: absolute;
+        left: 15px; /* Positioning of the line */
+        top: 0; /* Start at the top */
+        width: 2px;
+        height: 100%; /* Full height */
+        background: #e9ecef; /* Line color */
+        z-index: 0;
+    }
+    .icon-container {
+        position: relative;
+        z-index: 1; /* Place above the line */
+        font-size: 1.5rem; /* Icon size */
+        color: #6c757d; /* Default icon color */
+    }
+    .step-label {
+        z-index: 1; /* Place text above the line */
+        color: #6c757d; /* Default text color */
+        font-weight: 500; /* Medium weight for clarity */
+    }
+    .text-success {
+        color: #28a745 !important; /* Change text color for completed status */
+    }
+    /* Add media query for better responsiveness */
+    @media (max-width: 768px) {
+        .progress-list {
+            padding-left: 20px; /* Adjust padding for smaller screens */
+        }
+        .icon-container {
+            font-size: 1.25rem; /* Smaller icon size on mobile */
+        }
+    }
+</style>
+{% endblock content %}

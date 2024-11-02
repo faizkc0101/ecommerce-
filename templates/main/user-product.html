@@ -44,7 +44,7 @@
                   {{ j.name }} 
                   {% if j.discount %}
                     <span class="text-muted text-decoration-line-through"><del>Rs. {{ j.price }}</del></span><br><br>
-                    <span class="text-danger"> Rs. {{ j.id|applydiscount }}</span>
+                    <span class="text-danger"> Rs. {{ j|applydiscount }}</span>
                   {% else %}
                     - Rs. {{ j.price }}
                   {% endif %}

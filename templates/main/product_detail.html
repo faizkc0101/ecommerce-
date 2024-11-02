@@ -23,7 +23,7 @@
                         <div class="price-box">
                             <p><strong>Price:</strong> Rs. {{ product.price }}</p>
                             {% if product.discount %}
-                                <p>Discounted Price: <span class="text-danger">Rs. {{ product.id|applydiscount }}</span></p>
+                            <p>Discounted Price: <span class="text-danger">Rs. {{ product|applydiscount }}</span></p>
                             {% endif %}
                         </div>
                         <p class="product-description mt-3 mb-3"><strong>Description:</strong> {{ product.description }}</p>
@@ -63,7 +63,7 @@
                             <div class="price-box">
                                 {% if i.discount %}
                                     <p>Original Price: <del>Rs. {{ i.price }}</del></p>
-                                    <p>Discounted Price: <span class="text-danger">Rs. {{ i.id|applydiscount }}</span></p>
+                                    <p>Discounted Price: <span class="text-danger">Rs. {{ i|applydiscount }}</span></p>
                                 {% else %}
                                     <p>Price: Rs. {{ i.price }}</p>
                                 {% endif %}

@@ -1,38 +1,113 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-<h2>My Orders</h2>
 
-{% if orders %}
-    <table class="table table-bordered mt-4">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Address</th>
-                <th>Status</th>
-                <th>Total</th>
-                <th>Payment Method</th>
-                <th>Paid</th>
-                <th>Created</th>
-                <th>Updated</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-                <tr>
-                    <td>{{ order.id }}</td>
-                    <td>{{ order.address }}</td>
-                    <td>{{ order.status }}</td>
-                    <td>Rs. {{ order.total }}</td>
-                    <td>{{ order.get_payment_method_display }}</td>
-                    <td>{{ order.is_paid|yesno:"Yes,No" }}</td>
-                    <td>{{ order.created|date:"Y-m-d H:i" }}</td>
-                    <td>{{ order.updated|date:"Y-m-d H:i" }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p>You have no orders.</p>
-{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Orders</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        #myorder {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        h3 {
+            font-family: 'Georgia', serif;
+            font-size: 1.75em;
+            font-weight: 500;
+            color: #333;
+        }
+        .table thead {
+            background-color: #343a40;
+            color: #fff;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .btn {
+            font-size: 0.9em;
+            padding: 5px 10px;
+        }
+        .btn i {
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<hr class="mt-0">
+<div class="card shadow m-5" id="myorder">
+    <div class="card-body">
+        <div class="container-fluid">
+            <h3>My Orders</h3>
+            <table class="table table-bordered table-hover mt-4">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Order ID</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <th>Total (Rs.)</th>
+                        <th>Payment Method</th>
+                        <th>Paid</th>
+                        <th>Order Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.address }}</td>
+                        <td>
+                            <a href="{% url 'user_order_track' order.id %}" class="btn btn-primary btn-sm" title="Track Status">
+                                <i class="fa fa-truck"></i> {{ order.get_status_display }}
+                            </a>
+                        </td>
+                        <td>Rs. {{ order.total|floatformat:2 }}</td>
+                        <td>{{ order.get_payment_method_display }}</td>
+                        <td>{{ order.is_paid|yesno:"Yes,No" }}</td>
+                        <td>{{ order.created|date:"Y-m-d H:i" }}</td>
+                        <td>
+                            <!-- Order status badge -->
+                            <span class="badge 
+                                {% if order.status == 'Pending' %}bg-warning
+                                {% elif order.status == 'Dispatched' %}bg-info
+                                {% elif order.status == 'Delivered' %}bg-success
+                                {% elif order.status == 'Cancelled' %}bg-danger
+                                {% elif order.status == 'Returned' %}bg-secondary
+                                {% endif %}">
+                                {{ order.status }}
+                            </span>
+                       
+                            <!-- Buttons for changing status -->
+                            {% if order.status == "Pending" %}
+                                <a href="{% url 'change_order_status' order.id %}?status=Cancelled"
+                                   class="btn btn-danger btn-sm ms-2"
+                                   onclick="return confirm('Cancel this order?');">
+                                    Cancel
+                                </a>
+
+                            {% elif order.status == "Delivered" %}
+                                <a href="{% url 'change_order_status' order.id %}?status=Returned"
+                                   class="btn btn-warning btn-sm ms-2"
+                                   onclick="return confirm('Return this order?');">
+                                    Return
+                                </a>
+                            {% endif %}
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
 
 {% endblock content %}

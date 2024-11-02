@@ -157,3 +157,21 @@ def delete_carousel(request,pid):
     carousel.delete()
     return redirect('view_carousel')
     return render(request, 'myadmin/delete_carousel.html')
+
+from order.models import Orders
+
+def admin_order(request):
+    orders = Orders.objects.select_related('address', 'cart', 'user').all()
+    return render(request, 'myadmin/admin_order.html', {'orders': orders})
+
+def admin_update_order_status(request):
+    if request.method == "POST":
+        orders = Orders.objects.all()
+        for order in orders:
+            new_status = request.POST.get(f"status_{order.id}")
+            if new_status and new_status != order.status:
+                order.status = new_status
+                order.save()
+                messages.success(request, f"Order {order.id} status updated to {new_status}.")
+        return redirect('admin_order')
+    return redirect('admin_order')

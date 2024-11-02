@@ -86,15 +86,33 @@ def add_to_cart(request, pid):
     return redirect('cart_view')
 
 
+# @login_required(login_url='user_login')
+# def cart_view(request):
+
+#     cart, created = Cart.objects.get_or_create(user=request.user)
+#     items = CartItem.objects.filter(cart=cart)
+#     total = cart.total_price
+    
+#     return render(request, 'main/cart.html', {'cart': cart, 'items': items, 'total': total})
+
+
 @login_required(login_url='user_login')
 def cart_view(request):
-
+    # Get or create the cart for the logged-in user
     cart, created = Cart.objects.get_or_create(user=request.user)
+    
+    # Get all items in the cart
     items = CartItem.objects.filter(cart=cart)
+    
+    # Get the total price details
     total = cart.total_price
     
-    return render(request, 'main/cart.html', {'cart': cart, 'items': items, 'total': total})
-
+    return render(request, 'main/cart.html', {
+        'cart': cart,
+        'items': items,
+        'total_discounted': total['total_discounted'],
+        'total_original': total['total_original']
+    })
 
 @login_required(login_url='user_login')
 def update_cart_item(request, pid, action):
@@ -108,7 +126,6 @@ def update_cart_item(request, pid, action):
     cart_item.save()
 
     return redirect('cart_view')
-
 
 @login_required
 def remove_cart_item(request, pid):
