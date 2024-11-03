@@ -33,6 +33,7 @@
                         <a href="{% url 'update_cart_item' item.product.id 'incre' %}" class="btn btn-outline-dark ">+</a>
                         <a href="{% url 'update_cart_item' item.product.id 'decre' %}" class="btn btn-outline-dark ">-</a>
                         <a href="{% url 'remove_cart_item' item.product.id %}" class="btn btn-outline-danger m-2 " onclick="return confirm('Are sure?');">Remove</a>
+
                     </td>
                 </tr>
                 {% empty %}
@@ -55,6 +56,7 @@
         <a href="{% url 'checkout_selection'%}" class="btn btn-outline-success mr-2" style="float:right">checkout</a>
         
     </div>
+
 
 
 

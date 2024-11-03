@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 from main.models import *
 
@@ -9,6 +11,7 @@ from main.models import *
 def home(request):
     #admin can  add carousel from backend 
     carousel = Carousel.objects.all()
+    #latest 8 produc show
     latest_products = Product.objects.all().order_by('-id')[:8]
     return render(request,'main/home.html',{'carousel':carousel,'latest_products':latest_products})
 
@@ -20,7 +23,6 @@ def about(request):
 def contact(request):
     return render(request, 'main/contact.html')
 
-from django.core.paginator import Paginator
 # show product all or catgory wase
 def user_product(request, pid):
     # All products
@@ -56,7 +58,7 @@ def user_product(request, pid):
 def product_detail(request, pid):
     product = get_object_or_404(Product, id=pid)
     
-    # latest  10 product
+    # latest  4 product
     latest_products = Product.objects.exclude(id=pid).order_by('-id')[:4]
 
     context = {'product': product,'latest_products': latest_products}
@@ -92,18 +94,17 @@ def cart_view(request):
 
     cart, created = Cart.objects.get_or_create(user=request.user)
     
-
     items = CartItem.objects.filter(cart=cart)
     
- 
     total = cart.total_price
     
-    return render(request, 'main/cart.html', {
-        'cart': cart,
-        'items': items,
-        'total_discounted': total['total_discounted'],
-        'total_original': total['total_original']
-    })
+    context ={
+         'cart': cart,
+         'items': items,
+         'total_discounted': total['total_discounted'],
+         'total_original': total['total_original']      
+    }
+    return render(request, 'main/cart.html', context)
 
 @login_required(login_url='user_login')
 def update_cart_item(request, pid, action):
@@ -126,11 +127,10 @@ def remove_cart_item(request, pid):
     messages.warning(request,'remove product from cart')
     return redirect('cart_view') 
 
-from django.db.models import Q
 
 def search(request):
     query = request.GET.get('keyword', '')
-    products = Product.objects.all()  # Initialize products with all products
+    products = Product.objects.all() 
 
     if query:
         try:
