@@ -9,7 +9,7 @@ from main.models import *
 def home(request):
     #admin can  add carousel from backend 
     carousel = Carousel.objects.all()
-    latest_products = Product.objects.all().order_by('-id')[:10]
+    latest_products = Product.objects.all().order_by('-id')[:8]
     return render(request,'main/home.html',{'carousel':carousel,'latest_products':latest_products})
 
 
@@ -86,25 +86,16 @@ def add_to_cart(request, pid):
     return redirect('cart_view')
 
 
-# @login_required(login_url='user_login')
-# def cart_view(request):
-
-#     cart, created = Cart.objects.get_or_create(user=request.user)
-#     items = CartItem.objects.filter(cart=cart)
-#     total = cart.total_price
-    
-#     return render(request, 'main/cart.html', {'cart': cart, 'items': items, 'total': total})
-
 
 @login_required(login_url='user_login')
 def cart_view(request):
-    # Get or create the cart for the logged-in user
+
     cart, created = Cart.objects.get_or_create(user=request.user)
     
-    # Get all items in the cart
+
     items = CartItem.objects.filter(cart=cart)
     
-    # Get the total price details
+ 
     total = cart.total_price
     
     return render(request, 'main/cart.html', {
@@ -127,7 +118,7 @@ def update_cart_item(request, pid, action):
 
     return redirect('cart_view')
 
-@login_required
+@login_required(login_url='user_login')
 def remove_cart_item(request, pid):
     cart = Cart.objects.get(user=request.user)
     cart_item = CartItem.objects.get(cart=cart, product_id=pid)
@@ -151,7 +142,7 @@ def search(request):
             pass
     return render(request, 'main/search.html', {'products': products, 'query': query})
 
-
+@login_required(login_url='user_login')
 def add_to_wishlist(request,pid):
     product = get_object_or_404(Product,id=pid)
     
@@ -163,12 +154,13 @@ def add_to_wishlist(request,pid):
 
     return redirect('wishlist')
 
+@login_required(login_url='user_login')
 def remove_from_wishlist(request, pid):
     product = get_object_or_404(Product, id=pid)
     Wishlist.objects.filter(user=request.user, product=product).delete() 
     return redirect('wishlist')
 
-
+@login_required(login_url='user_login')
 def wishlist(request):
     wishlist = Wishlist.objects.filter(user=request.user)
     return render(request,'main/wishlist.html',{'wishlist':wishlist})

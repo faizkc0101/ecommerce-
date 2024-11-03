@@ -19,7 +19,7 @@ def checkout_view(request):
         return redirect('cart_view')  
 
     
-    total_price = int(cart.total_price * 100)
+    total_price = int(cart.total_price['total_discounted'] * 100)
     #lates 3 addess to face
     addresses = Addresss.objects.filter(user=request.user).order_by('-id')[:3]
 
@@ -44,7 +44,7 @@ def checkout_view(request):
             cart=cart,
             address=user_selected_address,
             user=request.user,
-            total=cart.total_price,
+            total=cart.total_price['total_discounted'],
             payment_method=payment_method,
             is_paid=False
         )
@@ -63,7 +63,7 @@ def checkout_view(request):
 
     return render(request, 'order/checkout_selection.html', {
         'total_price': total_price / 100, 
-        'addresses': addresses ,'items':items})
+        'addresses': addresses ,'items':items,'cart':cart})
 
 
 def handle_address_creation(request):
@@ -152,7 +152,7 @@ def order_confirmation(request, order_id):
     return render(request, 'order/order_confirmation.html', {'order': order})
 
 def my_order(request):
-    orders = Orders.objects.filter(user=request.user)
+    orders = Orders.objects.filter(user=request.user).order_by('-created')
     return render(request,'order/my_order.html',{'orders': orders})
 
 
@@ -186,6 +186,6 @@ def change_order_status(request, pid):
     else:
         messages.error(request, f"Cannot change status from '{order.status}' to '{status}'.")
 
-    return redirect('myorder')
+    return redirect('my_order')
 
 

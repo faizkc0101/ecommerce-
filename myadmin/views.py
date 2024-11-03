@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from accounts.models import CustomUser
+from order.models import *
 
 def adminLogin(request):
     if request.method == "POST":
@@ -25,9 +26,33 @@ def adminLogin(request):
              
     return render(request, 'myadmin/admin_login.html',locals())
  
+from django.db.models import Sum  # Make sure to import Sum
 
 def admin_dashboard(request):
-    return render(request, 'myadmin/admin_dashboard.html')
+    order = Orders.objects.count()
+    product = Product.objects.count()
+    category = Category.objects.count()
+    customuser = CustomUser.objects.count()
+
+   
+     
+    total_revenue_cod = Orders.objects.filter(payment_method='COD').aggregate(total=Sum('total'))['total'] or 0
+    total_revenue_stripe = Orders.objects.filter(payment_method='Stripe').aggregate(total=Sum('total'))['total'] or 0
+
+   
+    total_revenue = float(total_revenue_cod) + float(total_revenue_stripe)
+
+    context = {
+        'order': order,
+        'product': product,
+        'category': category,
+        'customuser': customuser,
+        'total_revenue_cod': total_revenue_cod,
+        'total_revenue_stripe': total_revenue_stripe,
+        'total_revenue': total_revenue,
+    }
+    return render(request, 'myadmin/admin_dashboard.html', context)
+
 
 
 def add_category(request):

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% load custom_tags %}
+
 {% load static %}
 
 <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
@@ -44,7 +44,7 @@
                   {{ j.name }} 
                   {% if j.discount %}
                     <span class="text-muted text-decoration-line-through"><del>Rs. {{ j.price }}</del></span><br><br>
-                    <span class="text-danger"> Rs. {{ j|applydiscount }}</span>
+                    <span class="text-danger"> Rs. {{ j.get_discounted_price }}</span>
                   {% else %}
                     - Rs. {{ j.price }}
                   {% endif %}

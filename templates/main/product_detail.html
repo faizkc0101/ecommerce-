@@ -2,7 +2,7 @@
 
 {% block content %}
 {% load static %}
-{% load custom_tags %}
+
 
     <link href="{% static 'css/product-detail.css' %}" rel="stylesheet"/>
 
@@ -19,11 +19,11 @@
                 </div>
                 <div class="col-md-6 ">
                     <div class="product-detail-content ">
-                        <h2 class="product-name">{{ product.name }}</h2>
+                        <h2 class="product-name">{{ product.name }}</h2><br><br>
                         <div class="price-box">
                             <p><strong>Price:</strong> Rs. {{ product.price }}</p>
                             {% if product.discount %}
-                            <p>Discounted Price: <span class="text-danger">Rs. {{ product|applydiscount }}</span></p>
+                            <p>Discounted Price: <span class="text-danger">Rs. {{ product.get_discounted_price }}</span></p>
                             {% endif %}
                         </div>
                         <p class="product-description mt-3 mb-3"><strong>Description:</strong> {{ product.description }}</p>
@@ -63,7 +63,7 @@
                             <div class="price-box">
                                 {% if i.discount %}
                                     <p>Original Price: <del>Rs. {{ i.price }}</del></p>
-                                    <p>Discounted Price: <span class="text-danger">Rs. {{ i|applydiscount }}</span></p>
+                                    <p>Discounted Price: <span class="text-danger">Rs. {{ i.get_discounted_price}}</span></p>
                                 {% else %}
                                     <p>Price: Rs. {{ i.price }}</p>
                                 {% endif %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% load custom_tags %}
+
 {% block content %}
 
 <!-- Display the Search Query -->
@@ -31,9 +31,9 @@
                         <p class="card-text" style="font-size: 14px;">{{ j.description|truncatechars:40 }}</p>
                         {% if j.discount %}
                             <p>
-                                <span class="text-muted text-decoration-line-through">Rs. {{ j.price }}</span>
+                                <span class="text-muted text-decoration-line-through"><del>Rs. {{ j.price }}<del></span>
                                 <br>
-                                <span class="text-danger">Rs. {{ j.id|applydiscount }}</span>
+                                <span class="text-danger">Rs. {{ j.get_discounted_price }}</span>
                             </p>
                         {% else %}
                             <p>Rs. {{ j.price }}</p>

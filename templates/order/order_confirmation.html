@@ -63,7 +63,7 @@
             <li><strong>Payment Method:</strong> {{ order.payment_method }}</li>
             <li><strong>Shipping Address:</strong> {{ order.address.address_line }}, {{ order.address.city }}, {{ order.address.state }} - {{ order.address.postal_code }}, {{ order.address.country }}</li>
         </ul>
-        <a href="{% url 'checkout_selection' %}" class="btn btn-primary">Back to Checkout</a>
+        <a href="{% url 'my_order' %}" class="btn btn-primary">track order</a>
     </div>
 </body>
 

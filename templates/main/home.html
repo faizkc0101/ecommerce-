@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load custom_tags %}
+
 {% block content %}
 <link href="{% static 'css/product-detail.css' %}" rel="stylesheet"/>
 <style>
@@ -77,8 +77,8 @@
                             <h5 class="card-title">{{ i.name }}</h5>
                             <div class="price-box">
                                 {% if i.discount %}
-                                    <p>Original Price: <del>Rs. {{ i.price }}</del></p>
-                                    <p>Discounted Price: <span class="text-danger">Rs. {{ i|applydiscount }}</span></p>
+                                    <p> Price: <del>Rs. {{ i.price }}</del></p>
+                                    <p>Offer Price: <span class="text-danger">Rs. {{ i.get_discounted_price }}</span></p>
                                 {% else %}
                                     <p>Price: Rs. {{ i.price }}</p>
                                 {% endif %}
