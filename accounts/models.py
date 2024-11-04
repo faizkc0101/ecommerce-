@@ -13,6 +13,5 @@ class CustomUser(AbstractUser):
         return self.username
 
 
-
 # username, firstname, lastname, email, is_active, is_staff, is_superuser,
 # iast_login, datejoined

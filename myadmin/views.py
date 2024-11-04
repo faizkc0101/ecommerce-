@@ -26,32 +26,56 @@ def adminLogin(request):
              
     return render(request, 'myadmin/admin_login.html',locals())
  
-from django.db.models import Sum  # Make sure to import Sum
+
+from django.shortcuts import render
+from django.db.models import Sum
+from django.db.models.functions import TruncMonth
+from django.db.models import Value
+from django.db.models.functions import Coalesce
 
 def admin_dashboard(request):
-    order = Orders.objects.count()
-    product = Product.objects.count()
-    category = Category.objects.count()
-    customuser = CustomUser.objects.count()
+    # Basic counts
+    order_count = Orders.objects.count()
+    product_count = Product.objects.count()
+    category_count = Category.objects.count()
+    user_count = CustomUser.objects.count()
 
-   
-     
-    total_revenue_cod = Orders.objects.filter(payment_method='COD').aggregate(total=Sum('total'))['total'] or 0
-    total_revenue_stripe = Orders.objects.filter(payment_method='Stripe').aggregate(total=Sum('total'))['total'] or 0
+    # Monthly revenue aggregation for COD and Stripe
+    revenue_data_cod = (
+        Orders.objects.filter(payment_method='COD')
+        .annotate(month=TruncMonth('created'))
+        .values('month')
+        .annotate(total=Coalesce(Sum('total'), Value(0)))
+        .order_by('month')
+    )
 
-   
-    total_revenue = float(total_revenue_cod) + float(total_revenue_stripe)
+    revenue_data_stripe = (
+        Orders.objects.filter(payment_method='Stripe')
+        .annotate(month=TruncMonth('created'))
+        .values('month')
+        .annotate(total=Coalesce(Sum('total'), Value(0)))
+        .order_by('month')
+    )
+
+    # Overall revenue calculations
+    total_revenue_cod = Orders.objects.filter(payment_method='COD').aggregate(total=Coalesce(Sum('total'), Value(0)))['total']
+    total_revenue_stripe = Orders.objects.filter(payment_method='Stripe').aggregate(total=Coalesce(Sum('total'), Value(0)))['total']
+    total_revenue = total_revenue_cod + total_revenue_stripe  # Removed float conversion
 
     context = {
-        'order': order,
-        'product': product,
-        'category': category,
-        'customuser': customuser,
+        'order': order_count,
+        'product': product_count,
+        'category': category_count,
+        'customuser': user_count,
         'total_revenue_cod': total_revenue_cod,
         'total_revenue_stripe': total_revenue_stripe,
         'total_revenue': total_revenue,
+        'revenue_data_cod': list(revenue_data_cod),
+        'revenue_data_stripe': list(revenue_data_stripe),
     }
     return render(request, 'myadmin/admin_dashboard.html', context)
+
+
 
 
 
@@ -200,3 +224,6 @@ def admin_update_order_status(request):
                 messages.success(request, f"Order {order.id} status updated to {new_status}.")
         return redirect('admin_order')
     return redirect('admin_order')
+
+
+

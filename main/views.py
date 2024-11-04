@@ -15,7 +15,6 @@ def home(request):
     latest_products = Product.objects.all().order_by('-id')[:8]
     return render(request,'main/home.html',{'carousel':carousel,'latest_products':latest_products})
 
-
 def about(request):
     return render(request, 'main/about.html')
 

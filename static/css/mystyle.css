@@ -1,10 +1,11 @@
 body {
   font-family: 'Ubuntu', sans-serif;
+  background-color: #f8f9fa; /* Light background for contrast */
 }
 
 /* Navbar Styling */
 .navbar {
-  background-color: #2c3e50;
+  background-color: #343a40; /* Darker navbar */
   padding: 1rem;
 }
 
@@ -16,49 +17,43 @@ body {
 }
 
 .navbar-brand:hover {
-  color: #0a0e0d;
+  color: #ffc107; /* Highlight color on hover */
 }
 
 .navbar-nav .nav-link {
-  color: rgba(250, 253, 255, 0.8) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
   font-size: 1.1rem;
   transition: all 0.3s ease;
 }
 
 .navbar-nav .nav-link:hover {
   color: #000;
-  background-color: rgba(146, 191, 236, 0.2);
-  border-radius: 10px;
-
+  background-color: rgba(255, 255, 255, 0.2); /* Light hover effect */
+  border-radius: 5px;
 }
 
 /* Search Bar Styling */
 .form-inline .form-control {
   border-radius: 20px;
-  border: 1px solid #aadbd1;
+  border: 1px solid #ced4da;
   padding: 0.5rem 1rem;
 }
 
-.form-inline .btn-outline {
-  color: #939897;
-  border-color: #c0c7c5;
-  border-radius: 50%;
+.form-inline .btn-outline-light {
+  border-radius: 20px;
   transition: background-color 0.3s;
 }
 
-.form-inline .btn-outline:hover {
-  background-color: #f9fbfad2;
+.form-inline .btn-outline-light:hover {
+  background-color: #ffc107; /* Highlight color on hover */
   color: #fff;
 }
 
-
-/* Footer Links */
-#footer a, #contact a {
-  color: #090104;
-}
-
-#footer a:hover, #contact a:hover {
-  color: rgb(127, 139, 216);
+/* Footer Styling */
+footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }
 
 /* Scroll Button */
