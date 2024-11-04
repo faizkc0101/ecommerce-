@@ -24,5 +24,6 @@ urlpatterns = [
     path('admin_order/', views.admin_order, name='admin_order'),
     path('admin/orders/update_status/', views.admin_update_order_status, name='admin_update_order_status'),
 
+    path('order/<int:order_id>/approve-return/', views.approve_return, name='approve_return'),
 
  ]

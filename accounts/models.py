@@ -4,6 +4,7 @@ from django.db import models
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     phone_field = models.CharField(max_length=15, blank=True)
+    wallet = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     is_verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'  

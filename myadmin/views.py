@@ -223,4 +223,40 @@ def admin_update_order_status(request):
     return redirect('admin_order')
 
 
+from django.contrib import messages
+from django.shortcuts import redirect, get_object_or_404
+from django.db import transaction
+import logging
+
+logger = logging.getLogger(__name__)
+
+def approve_return(request, order_id):
+    order = get_object_or_404(Orders, id=order_id)
+
+    if request.user.is_staff and order.return_requested and not order.return_approved:
+        try:
+            with transaction.atomic():
+                # Log initial wallet amount
+                logger.debug(f"User wallet before refund: {order.user.wallet}")
+                
+                order.return_approved = True
+                order.status = "Returned"
+                order.is_refunded = True
+                order.save()
+
+                # Update the user's wallet
+                order.user.wallet += order.total
+                order.user.save()
+
+                # Log the new wallet amount
+                logger.debug(f"User wallet after refund: {order.user.wallet}")
+
+            messages.success(request, "Return request approved and amount added to wallet.")
+        except Exception as e:
+            messages.error(request, "An error occurred while approving the return request: {}".format(e))
+            logger.error(f"Error approving return for order {order.id}: {e}")
+    else:
+        messages.error(request, "Return request cannot be approved.")
+
+    return redirect('admin_order')
 

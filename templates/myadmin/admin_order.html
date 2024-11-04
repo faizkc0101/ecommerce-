@@ -2,7 +2,18 @@
 {% load static %}
 {% block content %}
 
-<div class="card shadow ">
+{% if messages %}
+    <div class="alert alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}
+
+<div class="card shadow">
     <div class="card-body">
         <div class="container-fluid">
             <h3 class="mb-4">Admin Orders</h3>
@@ -30,8 +41,7 @@
                             <td>{{ order.id }}</td>
                             <td>{{ order.user.username }}</td>
                             <td>
-                                
-                                {{ order.address.address_line }}
+                                {{ order.address.address_line }}<br>
                                 {{ order.address.street }}<br>
                                 {{ order.address.city }}<br>
                                 {{ order.address.state }} - {{ order.address.postal_code }}
@@ -51,6 +61,17 @@
                             <td>{{ order.created|date:"Y-m-d H:i" }}</td>
                             <td>{{ order.updated|date:"Y-m-d H:i" }}</td>
                         </tr>
+                        
+                        {% if order.return_requested and not order.return_approved and not order.is_refunded %}
+                        <tr>
+                            <td colspan="10">
+                                <form action="{% url 'approve_return' order.id %}" method="POST" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-info">Approve Return</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>

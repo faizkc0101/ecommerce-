@@ -71,7 +71,6 @@
                         <td>{{ order.is_paid|yesno:"Yes,No" }}</td>
                         <td>{{ order.created|date:"Y-m-d H:i" }}</td>
                         <td>
-                            <!-- Order status badge -->
                             <span class="badge 
                                 {% if order.status == 'Pending' %}bg-warning
                                 {% elif order.status == 'Dispatched' %}bg-info
@@ -82,24 +81,37 @@
                                 {{ order.status }}
                             </span>
                        
-                            <!-- Buttons for changing status -->
                             {% if order.status == "Pending" %}
                                 <a href="{% url 'change_order_status' order.id %}?status=Cancelled"
                                    class="btn btn-danger btn-sm ms-2"
                                    onclick="return confirm('Cancel this order?');">
                                     Cancel
                                 </a>
-
-                            {% elif order.status == "Delivered" %}
-                                <a href="{% url 'change_order_status' order.id %}?status=Returned"
-                                   class="btn btn-warning btn-sm ms-2"
-                                   onclick="return confirm('Return this order?');">
-                                    Return
-                                </a>
                             {% endif %}
-                        </td>
+                           
+                            {% if order.status == "Delivered" %}
+                                {% if not order.return_requested and not order.is_refunded %}
+                                    <form action="{% url 'request_return' order.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-info">Request Return</button>
+                                    </form>
+                                {% else %}
+                                    <p class="text-muted">
+                                        {% if order.return_requested %}
+                                            Return requested.
+                                        {% elif order.is_refunded %}
+                                            Order refunded.
+                                        {% endif %}
+                                    </p>
+                                {% endif %}
+                                {% endif %}
 
+                        </td>
                     </tr>
+
+                    <!-- Move the return request form inside the loop -->
+                    
+
                     {% endfor %}
                 </tbody>
             </table>

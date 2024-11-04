@@ -176,7 +176,7 @@ def change_order_status(request, pid):
   
     allowed_transitions = {
         'Pending': ['Cancelled'],
-        'Delivered': ['Returned'],
+        'Delivered': ['Return'],
     }
 
     if status in allowed_transitions.get(order.status, []):
@@ -189,3 +189,15 @@ def change_order_status(request, pid):
     return redirect('my_order')
 
 
+def request_return(request, order_id):
+    order = get_object_or_404(Orders, id=order_id, user=request.user)
+
+    # Only allow return requests if the order is delivered and not already requested
+    if order.status == "Delivered" and not order.return_requested and not order.is_refunded:
+        order.return_requested = True
+        order.save()
+        messages.success(request, "Return request submitted successfully.")
+    else:
+        messages.error(request, "Return request cannot be submitted.")
+
+    return redirect('my_order')  # Change to your dashboard URL
