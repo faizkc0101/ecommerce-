@@ -75,7 +75,7 @@
 <!-- Sales & Revenue Chart -->
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
-        <div class="col-sm-12 col-xl-8">
+        <div class="col-sm-12 col-xl-12">
             <div class="bg-secondary text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <h6 class="mb-0">Monthly Sales & Revenue</h6>
@@ -88,49 +88,46 @@
     </div>
 </div>
 
-<!-- Chart.js Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const revenueDataCOD = {{ revenue_data_cod|safe }};
-        const revenueDataStripe = {{ revenue_data_stripe|safe }};
-        
+        // Get JSON data from script tags
+        const revenueDataCOD = JSON.parse('{{ revenue_data_cod|safe }}');
+        const revenueDataStripe = JSON.parse('{{ revenue_data_stripe|safe }}');
+
         if (revenueDataCOD.length > 0 || revenueDataStripe.length > 0) {
             const labels = revenueDataCOD.map(item => {
                 const date = new Date(item.month);
                 return date.toLocaleString('default', { month: 'short', year: 'numeric' });
             });
-            
-            const codRevenue = revenueDataCOD.map(item => item.total ?? 0);
-            const stripeRevenue = revenueDataStripe.map(item => item.total ?? 0);
+
+            const codRevenue = revenueDataCOD.map(item => item.total || 0);
+            const stripeRevenue = revenueDataStripe.map(item => item.total || 0);
 
             const ctx = document.getElementById('sales-revenue-chart').getContext('2d');
             new Chart(ctx, {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Revenue from COD',
+                            label: 'COD Revenue',
                             data: codRevenue,
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            fill: true,
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
                         },
                         {
-                            label: 'Revenue from Stripe',
+                            label: 'Stripe Revenue',
                             data: stripeRevenue,
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            fill: true,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
                         }
                     ]
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        legend: { position: 'top' },
-                        title: { display: true, text: 'Monthly Sales & Revenue' }
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
             });
@@ -139,4 +136,5 @@
         }
     });
 </script>
+
 {% endblock %}

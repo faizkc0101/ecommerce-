@@ -25,13 +25,13 @@ def adminLogin(request):
              messages.error(request,'Invalid Credentials')
              
     return render(request, 'myadmin/admin_login.html',locals())
- 
-
+    
+import json
 from django.shortcuts import render
-from django.db.models import Sum
-from django.db.models.functions import TruncMonth
+from django.db.models import Sum, DecimalField
+from django.db.models.functions import TruncMonth, Coalesce
 from django.db.models import Value
-from django.db.models.functions import Coalesce
+from django.utils.safestring import mark_safe
 
 def admin_dashboard(request):
     # Basic counts
@@ -41,26 +41,26 @@ def admin_dashboard(request):
     user_count = CustomUser.objects.count()
 
     # Monthly revenue aggregation for COD and Stripe
-    revenue_data_cod = (
+    revenue_data_cod = list(
         Orders.objects.filter(payment_method='COD')
         .annotate(month=TruncMonth('created'))
         .values('month')
-        .annotate(total=Coalesce(Sum('total'), Value(0)))
+        .annotate(total=Coalesce(Sum('total', output_field=DecimalField()), Value(0, output_field=DecimalField())))
         .order_by('month')
     )
 
-    revenue_data_stripe = (
+    revenue_data_stripe = list(
         Orders.objects.filter(payment_method='Stripe')
         .annotate(month=TruncMonth('created'))
         .values('month')
-        .annotate(total=Coalesce(Sum('total'), Value(0)))
+        .annotate(total=Coalesce(Sum('total', output_field=DecimalField()), Value(0, output_field=DecimalField())))
         .order_by('month')
     )
 
     # Overall revenue calculations
-    total_revenue_cod = Orders.objects.filter(payment_method='COD').aggregate(total=Coalesce(Sum('total'), Value(0)))['total']
-    total_revenue_stripe = Orders.objects.filter(payment_method='Stripe').aggregate(total=Coalesce(Sum('total'), Value(0)))['total']
-    total_revenue = total_revenue_cod + total_revenue_stripe  # Removed float conversion
+    total_revenue_cod = Orders.objects.filter(payment_method='COD').aggregate(total=Coalesce(Sum('total', output_field=DecimalField()), Value(0, output_field=DecimalField())))['total']
+    total_revenue_stripe = Orders.objects.filter(payment_method='Stripe').aggregate(total=Coalesce(Sum('total', output_field=DecimalField()), Value(0, output_field=DecimalField())))['total']
+    total_revenue = total_revenue_cod + total_revenue_stripe
 
     context = {
         'order': order_count,
@@ -70,13 +70,10 @@ def admin_dashboard(request):
         'total_revenue_cod': total_revenue_cod,
         'total_revenue_stripe': total_revenue_stripe,
         'total_revenue': total_revenue,
-        'revenue_data_cod': list(revenue_data_cod),
-        'revenue_data_stripe': list(revenue_data_stripe),
+        'revenue_data_cod': mark_safe(json.dumps(revenue_data_cod, default=str)),
+        'revenue_data_stripe': mark_safe(json.dumps(revenue_data_stripe, default=str)),
     }
     return render(request, 'myadmin/admin_dashboard.html', context)
-
-
-
 
 
 def add_category(request):
