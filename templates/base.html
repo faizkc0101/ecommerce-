@@ -19,12 +19,12 @@
 <body>
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-sm">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">BLACK ROCK</a>
 
         <!-- Mobile Toggle Button -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myMenu">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myMenu" aria-controls="myMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -33,36 +33,29 @@
             <div class="input-group">
                 <input class="form-control" type="search" placeholder="Search..." name="keyword">
                 <div class="input-group-append">
-                    <button class="btn btn-outline" type="submit"><i class="fas fa-search"></i></button>
+                    <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
                 </div>
             </div>
         </form>
 
         <!-- Navbar Links -->
-         <!-- Navbar Links -->
-<div class="collapse navbar-collapse justify-content-end" id="myMenu">
-    <ul class="navbar-nav">
-        <li class="nav-item"><a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
-        <li class="nav-item"><a href="{% url 'user_product' 0 %}" class="nav-link"> Product </a></li><li class="nav-item"> <a href="/about/" class="nav-link"> About</a> </li>
-        <li class="nav-item"><a href="/contact/" class="nav-link"> Contact</a></li>
+        <div class="collapse navbar-collapse justify-content-end" id="myMenu">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/" class="nav-link"> Home</a></li>
+                <li class="nav-item"><a href="{% url 'user_product' 0 %}" class="nav-link"> Product </a></li>
+                <li class="nav-item"><a href="/about/" class="nav-link"> About</a></li>
+                <li class="nav-item"><a href="/contact/" class="nav-link"> Contact</a></li>
 
-        {% if not request.user.is_authenticated %}
-        <li class="nav-item"><a href="{% url 'user_register' %}" class="nav-link"> Signup</a></li>
-        <li class="nav-item"><a href="{% url 'user_login' %}" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-            
-        {% else %}
-
-        <li class="nav-item"><a href="{%url 'wishlist'%}" class="nav-link"> Wishlist</a></li>
-        <li class="nav-item"><a href="{% url 'my_order'%}" class="nav-link">My Order</a></li>
-
-        <li class="nav-item"><a href="{% url 'cart_view' %}" class="nav-link"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-        <li class="nav-item"><a href="{% url 'profile' %}" class="nav-link"><i class="fas fa-user-circle"></i> Profile</a></li>
-
-        {% endif %}
-    </ul>
-</div>
-
-
+                {% if not request.user.is_authenticated %}
+                <li class="nav-item"><a href="{% url 'user_register' %}" class="nav-link"> Signup</a></li>
+                <li class="nav-item"><a href="{% url 'user_login' %}" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                {% else %}
+                <li class="nav-item"><a href="{% url 'wishlist' %}" class="nav-link"> Wishlist</a></li>
+                <li class="nav-item"><a href="{% url 'cart_view' %}" class="nav-link"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+                <li class="nav-item"><a href="{% url 'profile' %}" class="nav-link"><i class="fas fa-user-circle"></i> Profile</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 </nav>
 

@@ -1,12 +1,13 @@
 body {
   font-family: 'Ubuntu', sans-serif;
   background-color: #f8f9fa; /* Light background for contrast */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
 }
 
 /* Navbar Styling */
 .navbar {
-  background-color: #343a40; /* Darker navbar */
-  padding: 1rem;
+  padding: 0.5rem; /* Adjust padding for better responsiveness */
 }
 
 .navbar-brand {
@@ -49,6 +50,25 @@ body {
   color: #fff;
 }
 
+/* Responsive Utilities */
+@media (max-width: 768px) {
+  .navbar-brand {
+      font-size: 1.5rem;
+  }
+
+  .navbar-nav .nav-link {
+      font-size: 1rem;
+  }
+
+  .form-inline .form-control {
+      width: 100%; /* Full-width search on smaller screens */
+  }
+
+  .form-inline .input-group {
+      width: auto; /* Adjust input group for better fitting */
+  }
+}
+
 /* Footer Styling */
 footer {
   position: relative;
@@ -76,7 +96,7 @@ html {
 
 /* Form Backgrounds */
 #login, #signupform {
-  background: url('/static/images/bg_texture.png');
+  background: url('/static/images/bg_texture.png') no-repeat center center;
   background-size: cover;
   color: #949494;
   opacity: 0.9;

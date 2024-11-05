@@ -262,3 +262,8 @@ def change_password(request):
     return render(request, 'accounts/change_password.html')
 
 
+def wallet(request):
+    user = request.user
+
+    wallet = user.wallet
+    return render(request,'accounts/wallet.html',{'wallet':wallet})

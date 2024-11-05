@@ -207,7 +207,9 @@ def delete_carousel(request,pid):
 from order.models import Orders
 
 def admin_order(request):
-    orders = Orders.objects.select_related('address', 'cart', 'user').all()
+    
+    orders = Orders.objects.select_related('address', 'cart', 'user').order_by('-created').all()
+
     return render(request, 'myadmin/admin_order.html', {'orders': orders})
 
 def admin_update_order_status(request):
@@ -223,40 +225,48 @@ def admin_update_order_status(request):
     return redirect('admin_order')
 
 
-from django.contrib import messages
-from django.shortcuts import redirect, get_object_or_404
-from django.db import transaction
-import logging
-
-logger = logging.getLogger(__name__)
 
 def approve_return(request, order_id):
     order = get_object_or_404(Orders, id=order_id)
 
-    if request.user.is_staff and order.return_requested and not order.return_approved:
-        try:
-            with transaction.atomic():
-                # Log initial wallet amount
-                logger.debug(f"User wallet before refund: {order.user.wallet}")
-                
-                order.return_approved = True
-                order.status = "Returned"
-                order.is_refunded = True
-                order.save()
+    
+    if not request.user.is_staff:
+        messages.error(request, "Permission denied: Only staff can approve returns.")
+        return redirect('admin_order')
 
-                # Update the user's wallet
-                order.user.wallet += order.total
-                order.user.save()
+    # Check if return request conditions are met
+    if not order.return_requested:
+        messages.error(request, "Return request not initiated for this order.")
+        return redirect('admin_order')
 
-                # Log the new wallet amount
-                logger.debug(f"User wallet after refund: {order.user.wallet}")
+    if order.return_approved:
+        messages.error(request, "This order's return has already been approved.")
+        return redirect('admin_order')
 
+    if order.is_refunded:
+        messages.error(request, "This order has already been refunded.")
+        return redirect('admin_order')
+
+    try:
+
+        # Handle wallet update if order was paid
+        if order.is_paid:
+
+            order.return_approved = True
+            order.status = "Returned"
+            order.is_refunded = True  # Mark as refunded
+            order.save()
+            # Update user's wallet
+            order.user.wallet += order.total
+            order.user.save()
             messages.success(request, "Return request approved and amount added to wallet.")
-        except Exception as e:
-            messages.error(request, "An error occurred while approving the return request: {}".format(e))
-            logger.error(f"Error approving return for order {order.id}: {e}")
-    else:
-        messages.error(request, "Return request cannot be approved.")
+            logger.info(f"Return approved for Order ID {order_id}. Wallet updated for user {order.user.id}.")
+        else:
+            messages.warning(request, "Order was not paid. No amount added to wallet.")
+
+        # Additional logging
+
+    except Exception as e:
+        messages.error(request, f"An error occurred while approving the return: {e}")
 
     return redirect('admin_order')
-
