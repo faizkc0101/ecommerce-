@@ -72,17 +72,13 @@
     </div>
 </div>
 
-<!-- Sales & Revenue Chart -->
+<!-- Revenue Chart -->
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
         <div class="col-sm-12 col-xl-12">
             <div class="bg-secondary text-center rounded p-4">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">Monthly Sales & Revenue</h6>
-                    <a href="#">Show All</a>
-                </div>
-                <canvas id="sales-revenue-chart"></canvas>
-                <p id="no-data-message" class="text-warning" style="display: none;">No revenue data available.</p>
+                <h6 class="mb-0">Total Revenue by Payment Method</h6>
+                <canvas id="sales-revenue-chart"></canvas> <!-- Updated canvas ID here -->
             </div>
         </div>
     </div>
@@ -91,49 +87,28 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Get JSON data from script tags
-        const revenueDataCOD = JSON.parse('{{ revenue_data_cod|safe }}');
-        const revenueDataStripe = JSON.parse('{{ revenue_data_stripe|safe }}');
+        const revenueData = JSON.parse('{{ revenue_data|safe }}');
+        const ctx = document.getElementById('sales-revenue-chart').getContext('2d');  // Updated selector to match canvas ID
 
-        if (revenueDataCOD.length > 0 || revenueDataStripe.length > 0) {
-            const labels = revenueDataCOD.map(item => {
-                const date = new Date(item.month);
-                return date.toLocaleString('default', { month: 'short', year: 'numeric' });
-            });
-
-            const codRevenue = revenueDataCOD.map(item => item.total || 0);
-            const stripeRevenue = revenueDataStripe.map(item => item.total || 0);
-
-            const ctx = document.getElementById('sales-revenue-chart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'COD Revenue',
-                            data: codRevenue,
-                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                        },
-                        {
-                            label: 'Stripe Revenue',
-                            data: stripeRevenue,
-                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['COD', 'Stripe'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [revenueData.COD, revenueData.Stripe],
+                    backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(54, 162, 235, 0.6)'],
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
-        } else {
-            document.getElementById('no-data-message').style.display = 'block';
-        }
+            }
+        });
     });
 </script>
 

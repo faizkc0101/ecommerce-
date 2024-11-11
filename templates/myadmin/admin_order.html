@@ -50,7 +50,16 @@
                             </td>
                             <td>Rs. {{ order.total|floatformat:2 }}</td>
                             <td>{{ order.get_payment_method_display }}</td>
-                            <td>{{ order.is_paid|yesno:"Yes,No" }}</td>
+                             
+                            <td>
+                                <a href="{% url 'admin_order' %}?order_id={{ order.id }}"
+                                   onclick="return confirm('Are you sure you want to change the payment status?');"
+                                   class="btn btn-sm {% if order.is_paid %}btn{% else %}btn-danger{% endif %}">
+                                    {% if order.is_paid %}is_Paid{% else %}Unpaid{% endif %}
+                                </a>
+                            </td>
+                            
+
                             <td>{{ order.created|date:"Y-m-d H:i" }}</td>
                             <td>{{ order.updated|date:"Y-m-d H:i" }}</td>
                             <td>

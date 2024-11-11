@@ -25,13 +25,12 @@ def adminLogin(request):
              messages.error(request,'Invalid Credentials')
              
     return render(request, 'myadmin/admin_login.html',locals())
-    
+
 import json
 from django.shortcuts import render
-from django.db.models import Sum, DecimalField
-from django.db.models.functions import TruncMonth, Coalesce
-from django.db.models import Value
-from django.utils.safestring import mark_safe
+from django.db.models import Sum, DecimalField, Value
+from django.db.models.functions import Coalesce
+from django.utils.safestring import mark_safe  # Import mark_safe
 
 def admin_dashboard(request):
     # Basic counts
@@ -40,26 +39,15 @@ def admin_dashboard(request):
     category_count = Category.objects.count()
     user_count = CustomUser.objects.count()
 
-    # Monthly revenue aggregation for COD and Stripe
-    revenue_data_cod = list(
-        Orders.objects.filter(payment_method='COD')
-        .annotate(month=TruncMonth('created'))
-        .values('month')
-        .annotate(total=Coalesce(Sum('total', output_field=DecimalField()), Value(0, output_field=DecimalField())))
-        .order_by('month')
-    )
+    # Calculate total revenue for COD and Stripe
+    total_revenue_cod = Orders.objects.filter(payment_method='COD').aggregate(
+        total=Coalesce(Sum('total', output_field=DecimalField()), Value(0, output_field=DecimalField()))
+    )['total'] or 0
 
-    revenue_data_stripe = list(
-        Orders.objects.filter(payment_method='Stripe')
-        .annotate(month=TruncMonth('created'))
-        .values('month')
-        .annotate(total=Coalesce(Sum('total', output_field=DecimalField()), Value(0, output_field=DecimalField())))
-        .order_by('month')
-    )
+    total_revenue_stripe = Orders.objects.filter(payment_method='STRIPE').aggregate(
+        total=Coalesce(Sum('total', output_field=DecimalField()), Value(0, output_field=DecimalField()))
+    )['total'] or 0
 
-    # Overall revenue calculations
-    total_revenue_cod = Orders.objects.filter(payment_method='COD').aggregate(total=Coalesce(Sum('total', output_field=DecimalField()), Value(0, output_field=DecimalField())))['total']
-    total_revenue_stripe = Orders.objects.filter(payment_method='Stripe').aggregate(total=Coalesce(Sum('total', output_field=DecimalField()), Value(0, output_field=DecimalField())))['total']
     total_revenue = total_revenue_cod + total_revenue_stripe
 
     context = {
@@ -70,10 +58,13 @@ def admin_dashboard(request):
         'total_revenue_cod': total_revenue_cod,
         'total_revenue_stripe': total_revenue_stripe,
         'total_revenue': total_revenue,
-        'revenue_data_cod': mark_safe(json.dumps(revenue_data_cod, default=str)),
-        'revenue_data_stripe': mark_safe(json.dumps(revenue_data_stripe, default=str)),
+        'revenue_data': mark_safe(json.dumps({
+            'COD': float(total_revenue_cod),
+            'Stripe': float(total_revenue_stripe),
+        })),
     }
     return render(request, 'myadmin/admin_dashboard.html', context)
+
 
 
 def add_category(request):
@@ -203,14 +194,27 @@ def delete_carousel(request,pid):
     carousel.delete()
     return redirect('view_carousel')
     return render(request, 'myadmin/delete_carousel.html')
-
 from order.models import Orders
+from django.shortcuts import redirect, render
+from django.urls import reverse
 
 def admin_order(request):
-    
-    orders = Orders.objects.select_related('address', 'cart', 'user').order_by('-created').all()
+    # Toggle is_paid status if order_id is provided in GET request
+    order_id = request.GET.get('order_id')
+    if order_id:
+        try:
+            order = Orders.objects.get(id=order_id)
+            order.is_paid = not order.is_paid
+            order.save()
+        except Orders.DoesNotExist:
+            pass  # Handle the case where the order does not exist
 
+        return redirect(reverse('admin_order'))
+
+    # Render the orders page with all orders
+    orders = Orders.objects.select_related('address', 'cart', 'user').order_by('-created').all()
     return render(request, 'myadmin/admin_order.html', {'orders': orders})
+
 
 def admin_update_order_status(request):
     if request.method == "POST":
