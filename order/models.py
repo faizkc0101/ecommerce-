@@ -14,8 +14,6 @@ class Addresss(models.Model):
         return f"{self.address_line}, {self.city}, {self.state}, {self.country}"
 
 
-from django.db import models
-from django.conf import settings
 
 class Orders(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
