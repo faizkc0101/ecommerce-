@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'main',
     'myadmin',
     'accounts',
-    'order',
+    'order', 
 ]
 
 MIDDLEWARE = [
